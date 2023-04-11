@@ -9,7 +9,14 @@
         android:id="@+id/nav_home"
         android:name="gentle.hilt.interop.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+
+        <action
+            android:id="@+id/action_nav_home_to_characterDetailsFragment"
+            app:destination="@id/characterDetailsFragment" />
+
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_gallery"
@@ -22,4 +29,14 @@
         android:name="gentle.hilt.interop.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+    <fragment
+        android:id="@+id/characterDetailsFragment"
+        android:name="gentle.hilt.interop.ui.home.details.CharacterDetailsFragment"
+        android:label="fragment_character_details"
+        tools:layout="@layout/fragment_character_details" >
+
+        <argument
+            android:name="character"
+            app:argType="gentle.hilt.interop.network.models.CharacterDetails" />
+    </fragment>
 </navigation>

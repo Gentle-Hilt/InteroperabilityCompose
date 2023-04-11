@@ -10,4 +10,11 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+
+
+    // Error messages
+    <string name="check_internet">Check your internet connection</string>
+    <string name="failed_to_load">Failed to load data</string>
+    <string name="retry">Retry</string>
+
 </resources>
