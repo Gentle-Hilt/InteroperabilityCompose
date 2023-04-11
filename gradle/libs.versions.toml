@@ -1,0 +1,86 @@
+[versions]
+com-android-application = "8.1.0-alpha11"
+org-jetbrains-kotlin-android = "1.8.10"
+core-ktx = "1.9.0"
+core-activity = "1.7.0"
+appcompat = "1.6.1"
+constraintlayout = "2.1.4"
+hilt = "2.45"
+coroutines = "1.6.4"
+lifecycle = "2.6.1"
+navigation = "2.5.3"
+room = "2.5.1"
+glide = "4.13.2"
+material = "1.8.0"
+datastore_preferences = "1.1.0-alpha04"
+timber = "5.0.1"
+logger = "2.2.0"
+retrofit = "2.9.0"
+moshi = "1.14.0"
+okhttp = "4.10.0"
+paging = "3.1.1"
+compose = "1.5.0-alpha02"
+
+safe-args = "2.5.3"
+parcelize = "1.8.10"
+kapt = "1.8.10"
+ktlint = "11.3.1"
+detekt = "1.23.0-RC1"
+
+[libraries]
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+core_activity = {group = "androidx.activity", name = "activity-ktx", version.ref = "core-activity"}
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+lifecycle-livedata= { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
+lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+lifecycle_runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt_compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+coroutines_core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+room_runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room_compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+glide_compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
+material-design = { group = "com.google.android.material", name = "material", version.ref = "material" }
+navigation_fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
+navigation_ui = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
+datastore_preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore_preferences" }
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+logger = { group = "com.orhanobut", name = "logger", version.ref = "logger" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+moshi_converter = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
+moshi_kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
+moshi_codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+okhttp_logging_interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+paging = { group = "androidx.paging" , name = "paging-runtime-ktx", version.ref = "paging"}
+
+compose_foundation = { group = "androidx.compose.foundation" , name = "foundation", version.ref = "compose"}
+compose_ui = { group = "androidx.compose.ui" , name = "ui", version.ref = "compose"}
+compose_animation = { group = "androidx.compose.animation" , name = "animation", version.ref = "compose"}
+compose_runtime = { group = "androidx.compose.runtime" , name = "runtime", version.ref = "compose"}
+compose_runtime_livedata = { group = "androidx.compose.runtime" , name = "runtime-livedata", version.ref = "compose"}
+compose_material = { group = "androidx.compose.material" , name = "material", version.ref = "compose"}
+compose_text = { group = "androidx.compose.ui" , name = "ui-text", version.ref = "compose"}
+compose_ui_tooling =  { group = "androidx.compose.ui" , name = "ui-tooling", version.ref = "compose"}
+compose_ui_preview = { group = "androidx.compose.ui" , name = "ui-tooling-preview", version.ref = "compose"}
+
+
+[plugins]
+com-android-application = { id = "com.android.application", version.ref = "com-android-application" }
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
+dagger_hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt"}
+navigation_safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "safe-args"}
+# kotlin_parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "parcelize" }
+# kotlin_kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kapt"}
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint"}
+detekt  = {id = "io.gitlab.arturbosch.detekt" , version.ref = "detekt"}
+
+[bundles]
+
+
+
+

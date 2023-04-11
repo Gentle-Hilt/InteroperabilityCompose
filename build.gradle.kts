@@ -1,0 +1,16 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+plugins {
+    id ("com.android.application") version ("8.1.0-alpha11") apply false
+    id ("org.jetbrains.kotlin.android") version ("1.8.10") apply false
+
+    id ("com.google.dagger.hilt.android") version ("2.45") apply false
+    id ("androidx.navigation.safeargs.kotlin") version ("2.5.3") apply false
+    id("com.google.devtools.ksp") version "1.8.10-1.0.9" apply false
+
+    // im just getting error from gradle 8.0 though it was fixed in older versions https://github.com/gradle/gradle/issues/22797
+    /*
+    alias(libs.plugins.com.android.application) apply false
+    alias(libs.plugins.org.jetbrains.kotlin.android) apply false
+    alias(libs.plugins.navigation.safeargs) apply false
+    alias(libs.plugins.dagger.hilt) apply false */
+}
