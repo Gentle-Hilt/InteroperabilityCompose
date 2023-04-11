@@ -22,7 +22,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "gentle.hilt.interop.androidTestUtil.HiltTestRunner"
     }
 
     buildTypes {
@@ -43,8 +43,17 @@ android {
         compose = true
     }
 
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
+    }
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.4"
+    }
+    packaging {
+        resources.excludes.add("META-INF/LICENSE.md")
+        resources.excludes.add("META-INF/NOTICE.md")
+        resources.excludes.add("META-INF/LICENSE-notice.md")
     }
 }
 
@@ -61,7 +70,8 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     // Convenience
-    implementation(libs.hilt) // https://issuetracker.google.com/issues/179057202 still waiting
+    implementation(libs.hilt)
+    implementation(libs.legacy.support.v4) // https://issuetracker.google.com/issues/179057202 still waiting
     kapt(libs.hilt.compiler)
     implementation(libs.timber)
     implementation(libs.logger)
@@ -91,4 +101,44 @@ dependencies {
     implementation(libs.compose.text)
     implementation(libs.compose.material)
     implementation(libs.compose.runtime.livedata)
+    implementation(libs.compose.coil)
+    implementation(libs.compose.paging)
+
+    // Local tests
+    testImplementation(testLibs.test.core)
+    testImplementation(testLibs.test.core.ktx)
+    testImplementation(testLibs.junit)
+    testImplementation(testLibs.junit.ext)
+    testImplementation(testLibs.arch.core)
+    testImplementation(testLibs.mockk)
+    testImplementation(testLibs.mockk.android)
+    testImplementation(testLibs.truth)
+    testImplementation(testLibs.coroutines)
+    testImplementation(testLibs.robolectric)
+    testImplementation(testLibs.web.server)
+    testImplementation(testLibs.hilt)
+    debugImplementation(testLibs.hilt)
+    debugImplementation(testLibs.runner)
+    kaptAndroidTest(testLibs.hilt.compiler)
+    kaptTest(testLibs.hilt.compiler)
+
+    androidTestImplementation(testLibs.junit.ext)
+    androidTestImplementation(testLibs.junit)
+    androidTestImplementation(testLibs.arch.core)
+    androidTestImplementation(testLibs.truth)
+    androidTestImplementation(testLibs.espresso.core)
+    androidTestImplementation(testLibs.mockk.android)
+    androidTestImplementation(testLibs.coroutines)
+    androidTestImplementation(testLibs.runner)
+    androidTestImplementation(testLibs.test.rules)
+    androidTestImplementation(testLibs.web.server)
+    androidTestImplementation(testLibs.hilt)
+    // Render problem
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.compose.ui.preview)
+    debugImplementation(libs.custom.view)
+    // Other
+    implementation(libs.splash.screen)
+    implementation(testLibs.kotlin.reflect)
+    testImplementation(testLibs.kotlin.reflect)
 }

@@ -9,17 +9,79 @@
         android:id="@+id/nav_home"
         android:name="gentle.hilt.interop.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+
+        <action
+            android:id="@+id/action_nav_home_to_characterDetailsFragment"
+            app:destination="@id/characterDetailsFragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popExitAnim="@anim/slide_to_right"
+            app:popEnterAnim="@anim/slide_from_left"
+            />
+
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="gentle.hilt.interop.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
+        android:name="gentle.hilt.interop.ui.gallery.FavoritesFragment"
+        android:label="@string/menu_favorites"
+        tools:layout="@layout/fragment_gallery" >
+        <action
+            android:id="@+id/action_nav_gallery_to_characterDetailsFragment"
+            app:destination="@id/characterDetailsFragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popExitAnim="@anim/slide_to_right"
+            app:popEnterAnim="@anim/slide_from_left"
+            />
+    </fragment>
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="gentle.hilt.interop.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/characterDetailsFragment"
+        android:label="@string/character_details"
+        android:name="gentle.hilt.interop.ui.home.details.CharacterDetailsFragment"
+        tools:layout="@layout/fragment_character_details"
+        app:exitAnim="@anim/slide_from_right"
+
+        >
+
+        <argument
+            android:name="character"
+            app:argType="gentle.hilt.interop.network.models.CharacterDetailsModel" />
+        <action
+            android:id="@+id/action_characterDetailsFragment_to_charactersInEpisodeFragment"
+            app:destination="@id/charactersInEpisodeFragment"
+            app:enterAnim="@anim/slide_from_bottom"
+            app:exitAnim="@anim/slide_to_bottom"
+            app:popExitAnim="@anim/slide_to_top"
+            app:popEnterAnim="@anim/slide_from_bottom"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/charactersInEpisodeFragment"
+        android:label="@string/episode_details"
+        android:name="gentle.hilt.interop.ui.home.details.episode.CharactersInEpisodeFragment"
+        tools:layout="@layout/fragment_characters_in_episode" >
+
+        <argument
+            android:name="episode"
+            app:argType="integer"
+            />
+        <action
+            android:id="@+id/action_charactersInEpisodeFragment_to_characterDetailsFragment"
+            app:destination="@id/characterDetailsFragment"
+            app:exitAnim="@anim/slide_to_top"
+            app:enterAnim="@anim/slide_from_top"
+            app:popExitAnim="@anim/slide_to_bottom"
+            app:popEnterAnim="@anim/slide_from_top"
+            />
+
+    </fragment>
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="gentle.hilt.interop.ui.settings.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings" />
+
 </navigation>

@@ -1,5 +1,9 @@
 [versions]
+kotlin_version = "1.8.10"
 junit = "4.13.2"
+junit_ext = "1.1.4"
+junit_jupiter = "5.9.3"
+junit_platform = "1.9.3"
 androidx-test-ext-junit = "1.1.5"
 espresso = "3.5.1"
 hilt-test = "2.45"
@@ -14,9 +18,15 @@ truth = "1.1.3"
 mockk = "1.13.3"
 turbine = "0.12.1"
 robolectric = "4.9.1"
+web_server = "4.10.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+junit_ext = {group = "androidx.test.ext", name = "junit-ktx", version.ref = "junit_ext"}
+junit_jupiter_params = {group = "org.junit.jupiter", name ="junit-jupiter-params" , version.ref = "junit_jupiter" }
+junit_jupiter_engine = {group = "org.junit.jupiter", name ="junit-jupiter-engine", version.ref = "junit_jupiter" }
+junit_jupiter = {group = "org.junit.jupiter", name="junit-jupiter", version.ref = "junit_jupiter"}
+junit_platform = {group = "org.junit.platform", name = "junit-platform-engine", version.ref = "junit_platform"}
 test_core = { group = "androidx.test", name = "core", version.ref = "test-core" }
 test_core_ktx = { group = "androidx.test", name = "core-ktx", version.ref = "test-core" }
 test_rules = { group = "androidx.test", name = "rules", version.ref = "test-core" }
@@ -35,6 +45,9 @@ hilt_compiler = { group = "com.google.dagger", name = "hilt-android-compiler", v
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+web_server = {group = "com.squareup.okhttp3", name="mockwebserver",version.ref ="web_server"}
+runner = { group = "androidx.test", name = "runner", version = "1.5.2" }
+kotlin_reflect = {group ="org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin_version"}
 
 [plugins]
 
