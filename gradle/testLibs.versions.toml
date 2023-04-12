@@ -1,5 +1,6 @@
 [versions]
 junit = "4.13.2"
+junit_ext = "1.1.4"
 androidx-test-ext-junit = "1.1.5"
 espresso = "3.5.1"
 hilt-test = "2.45"
@@ -17,6 +18,7 @@ robolectric = "4.9.1"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+junit_ext = {group = "androidx.test.ext", name = "junit-ktx", version.ref = "junit_ext"}
 test_core = { group = "androidx.test", name = "core", version.ref = "test-core" }
 test_core_ktx = { group = "androidx.test", name = "core-ktx", version.ref = "test-core" }
 test_rules = { group = "androidx.test", name = "rules", version.ref = "test-core" }

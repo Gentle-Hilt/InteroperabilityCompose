@@ -11,6 +11,12 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+
+    versionCatalogs {
+        create("testLibs") {
+            from(files("../interop/gradle/testLibs.versions.toml"))
+        }
+    }
 }
 
 rootProject.name = "interop"

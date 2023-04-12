@@ -35,7 +35,7 @@ class CharactersPagingSource @Inject constructor(
         }
     }
 
-    private fun getPageIndexFromNext(next: String?): Int? {
+    fun getPageIndexFromNext(next: String?): Int? {
         if (next == null) {
             return null
         }

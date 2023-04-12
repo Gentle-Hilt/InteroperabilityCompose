@@ -46,6 +46,8 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.4"
     }
+
+
 }
 
 dependencies {
@@ -94,5 +96,18 @@ dependencies {
     implementation(libs.compose.runtime.livedata)
     implementation(libs.compose.coil)
     implementation(libs.compose.paging)
+
+    // Local tests
+    testImplementation(testLibs.test.core)
+    testImplementation(testLibs.test.core.ktx)
+    testImplementation(testLibs.junit)
+    testImplementation(testLibs.junit.ext)
+
+    testImplementation(testLibs.arch.core)
+    testImplementation(testLibs.mockk)
+    testImplementation(testLibs.truth)
+    testImplementation(testLibs.coroutines)
+    testImplementation(testLibs.robolectric)
+
 
 }
