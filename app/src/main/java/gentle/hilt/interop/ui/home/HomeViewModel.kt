@@ -13,13 +13,11 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     val repository: NetworkRepository
-) : ViewModel(){
+) : ViewModel() {
 
     val pagedFlow = Pager(
         PagingConfig(pageSize = 35, prefetchDistance = 105, enablePlaceholders = false)
-    ){
+    ) {
         CharactersPagingSource(repository)
     }.flow.cachedIn(viewModelScope)
-
-
 }

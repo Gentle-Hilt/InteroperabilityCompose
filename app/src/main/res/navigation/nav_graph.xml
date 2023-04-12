@@ -38,5 +38,23 @@
         <argument
             android:name="character"
             app:argType="gentle.hilt.interop.network.models.CharacterDetails" />
+        <action
+            android:id="@+id/action_characterDetailsFragment_to_charactersInEpisodeFragment"
+            app:destination="@id/charactersInEpisodeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/charactersInEpisodeFragment"
+        android:name="gentle.hilt.interop.ui.home.details.episode.CharactersInEpisodeFragment"
+        android:label="fragment_characters_in_episode"
+        tools:layout="@layout/fragment_characters_in_episode" >
+
+
+        <argument
+            android:name="episode"
+            app:argType="integer"
+            />
+
+    </fragment>
+
+
 </navigation>

@@ -4,11 +4,10 @@ import gentle.hilt.interop.network.models.GetCharactersPage
 import retrofit2.Response
 import javax.inject.Inject
 
-
 class ApiClient @Inject constructor(
     private val apiService: ApiService
-){
-    suspend fun getCharactersPage(pageIndex:Int):ResponseState<GetCharactersPage>{
+) {
+    suspend fun getCharactersPage(pageIndex: Int): ResponseState<GetCharactersPage> {
         return safeApiCall { apiService.fetchCharactersPage(pageIndex) }
     }
 

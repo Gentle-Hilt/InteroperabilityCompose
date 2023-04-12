@@ -49,18 +49,17 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideApiService(retrofit: Retrofit):ApiService = retrofit.create(ApiService::class.java)
-
+    fun provideApiService(retrofit: Retrofit): ApiService = retrofit.create(ApiService::class.java)
 
     @Provides
     @Singleton
-    fun provideApiClient(apiService: ApiService): ApiClient{
+    fun provideApiClient(apiService: ApiService): ApiClient {
         return ApiClient(apiService)
     }
 
     @Provides
     @Singleton
-    fun provideNetworkRepository(apiClient: ApiClient, @ApplicationContext context: Context): NetworkRepository{
+    fun provideNetworkRepository(apiClient: ApiClient, @ApplicationContext context: Context): NetworkRepository {
         return NetworkRepository(apiClient, context)
     }
 }

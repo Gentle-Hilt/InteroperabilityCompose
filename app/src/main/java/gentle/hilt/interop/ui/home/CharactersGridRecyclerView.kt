@@ -96,7 +96,6 @@ fun Item(character: CharacterDetails, navController: NavController) {
             }
         }
     }
-
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -123,7 +122,6 @@ fun Grid(characters: Flow<PagingData<CharacterDetails>>, navController: NavContr
         columns = GridCells.Fixed(numColumns),
         flingBehavior = rememberSnapFlingBehavior(rememberLazyListState()),
         content = {
-
             items(lazyPaging.itemCount) { index ->
                 lazyPaging[index]?.let { character ->
                     Item(character, navController)
@@ -140,7 +138,8 @@ fun Grid(characters: Flow<PagingData<CharacterDetails>>, navController: NavContr
                         ErrorScreen(
                             message = message,
                             modifier = Modifier.padding(vertical = 8.dp),
-                            refresh = { lazyPaging.retry() })
+                            refresh = { lazyPaging.retry() }
+                        )
                     }
                 }
 
@@ -163,7 +162,7 @@ fun ErrorScreen(message: String, modifier: Modifier = Modifier, refresh: () -> U
         )
         Spacer(Modifier.height(16.dp))
         Button(onClick = refresh, colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)) {
-            Text(text = stringResource(id = R.string.retry),color=  Color.White)
+            Text(text = stringResource(id = R.string.retry), color = Color.White)
         }
     }
 }
@@ -171,13 +170,14 @@ fun ErrorScreen(message: String, modifier: Modifier = Modifier, refresh: () -> U
 class CharactersGridRecyclerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0,
+    defStyleAttr: Int = 0
 ) : AbstractComposeView(context, attrs, defStyleAttr) {
 
     private val emptyPagedData = PagingData.empty<CharacterDetails>()
     private val emptyFlowPagedData: Flow<PagingData<CharacterDetails>> = flow {
         emit(emptyPagedData)
     }
+
     // state that will allow UI to update
     private val uiState = mutableStateOf(emptyFlowPagedData)
 
@@ -188,11 +188,11 @@ class CharactersGridRecyclerView @JvmOverloads constructor(
             uiState.value = value
         }
     private val navController by lazy { findNavController() }
+
     @Composable
     override fun Content() {
         //  Content now uses Grid composable to display the pagedData
         Grid(characters = uiState.value, navController)
-
     }
     companion object {
         const val gray: Long = 0xFF3c3e44
@@ -200,5 +200,4 @@ class CharactersGridRecyclerView @JvmOverloads constructor(
         const val white: Long = 0xfff5f5f5
         const val light_dark: Long = 0xFF343541
     }
-
 }

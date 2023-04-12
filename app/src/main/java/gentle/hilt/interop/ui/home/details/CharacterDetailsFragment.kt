@@ -1,18 +1,15 @@
 package gentle.hilt.interop.ui.home.details
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
-import gentle.hilt.interop.R
 import gentle.hilt.interop.databinding.FragmentCharacterDetailsBinding
 import gentle.hilt.interop.network.models.CharacterDetails
-
 
 @AndroidEntryPoint
 class CharacterDetailsFragment : Fragment() {
@@ -23,6 +20,7 @@ class CharacterDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.testCharacterDetails.text = character.name
 
+        binding.characterInEpisodes.episodes = character.episode
     }
 
     private val args: CharacterDetailsFragmentArgs by navArgs()
@@ -32,12 +30,11 @@ class CharacterDetailsFragment : Fragment() {
         character = args.character
     }
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCharacterDetailsBinding.inflate(layoutInflater)
         return binding.root
     }
-
-
 }

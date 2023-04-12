@@ -5,7 +5,7 @@ import retrofit2.Response
 data class ResponseState<T>(
     val status: Status,
     val data: Response<T>?,
-    val exception: Exception?,
+    val exception: Exception?
 ) {
     sealed class Status {
         object Success : Status()
@@ -29,5 +29,4 @@ data class ResponseState<T>(
 
     val bodyNullable: T?
         get() = this.data?.body()
-
 }

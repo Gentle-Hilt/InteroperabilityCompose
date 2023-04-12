@@ -27,6 +27,6 @@ data class CharacterDetails(
     @Parcelize
     data class Origin(
         val name: String = "",
-        val url : String = ""
+        val url: String = ""
     ) : Parcelable
 }
