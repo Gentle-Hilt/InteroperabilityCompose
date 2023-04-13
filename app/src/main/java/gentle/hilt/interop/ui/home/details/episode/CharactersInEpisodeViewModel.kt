@@ -3,6 +3,7 @@ package gentle.hilt.interop.ui.home.details.episode
 import android.view.View
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gentle.hilt.interop.network.NetworkRepository
@@ -18,6 +19,8 @@ import javax.inject.Inject
 class CharactersInEpisodeViewModel @Inject constructor(
     private val repository: NetworkRepository
 ) : ViewModel() {
+    val networkObserve = repository.networkStatus.asLiveData()
+
     private val episodeState = MutableStateFlow(EpisodeDetails())
     private val charactersState = MutableStateFlow<List<CharacterDetails>>(emptyList())
 
@@ -62,5 +65,9 @@ class CharactersInEpisodeViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun connected(): Boolean{
+        return repository.connected()
     }
 }

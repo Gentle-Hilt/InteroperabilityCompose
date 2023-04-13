@@ -3,6 +3,7 @@ package gentle.hilt.interop.ui.home
 import android.view.View
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -17,17 +18,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    val repository: NetworkRepository
+    private val repository: NetworkRepository
 ) : ViewModel() {
 
-    val pagedFlow = Pager(
+
+    val networkObserve = repository.networkStatus.asLiveData()
+
+    private val pagedFlow = Pager(
         PagingConfig(pageSize = 35, prefetchDistance = 105, enablePlaceholders = false)
     ) {
         CharactersPagingSource(repository)
     }.flow.cachedIn(viewModelScope)
 
 
-    fun observePages(grid: CharactersGridRecyclerView){
+    fun loadPages(grid: CharactersGridRecyclerView){
         grid.pagedData = pagedFlow
     }
 
@@ -41,5 +45,9 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun connected(): Boolean{
+        return repository.connected()
     }
 }

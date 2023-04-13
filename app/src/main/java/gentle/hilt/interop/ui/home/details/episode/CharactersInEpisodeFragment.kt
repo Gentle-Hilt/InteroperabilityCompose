@@ -11,6 +11,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import gentle.hilt.interop.databinding.FragmentCharactersInEpisodeBinding
+import gentle.hilt.interop.network.NetworkStatus
+import gentle.hilt.interop.ui.home.ErrorMessage
+
 
 @AndroidEntryPoint
 class CharactersInEpisodeFragment : Fragment() {
@@ -18,6 +21,44 @@ class CharactersInEpisodeFragment : Fragment() {
     private val viewModel: CharactersInEpisodeViewModel by viewModels()
 
     private val args: CharactersInEpisodeFragmentArgs by navArgs()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        checkInternet()
+        viewModel.observeCharacters(binding.charactersInEpisode)
+        viewModel.observeEpisodeInfo(binding.episodeInfo)
+        loading(binding.pbLoading)
+        reconnect()
+    }
+
+
+    private fun checkInternet() {
+        if (!viewModel.connected()) {
+            binding.noNetwork.visibility = View.VISIBLE
+            binding.noNetwork.setContent { ErrorMessage() }
+        }
+    }
+    private fun loading(loading: ComposeView){
+        loading.setContent { CircularProgressIndicator() }
+        viewModel.loadingState(loading)
+    }
+
+    private fun reconnect() {
+        viewModel.networkObserve.observe(viewLifecycleOwner) { networkState ->
+            when (networkState) {
+                NetworkStatus.Available -> {
+                    viewModel.fetchEpisodeDetails(args.episode)
+                    binding.noNetwork.visibility = View.GONE
+                }
+
+                NetworkStatus.Unavailable -> {
+                    viewModel.fetchEpisodeDetails(args.episode)
+                    binding.noNetwork.visibility = View.GONE
+                }
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,18 +71,5 @@ class CharactersInEpisodeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.fetchEpisodeDetails(args.episode)
-    }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewModel.observeCharacters(binding.charactersInEpisode)
-        viewModel.observeEpisodeInfo(binding.episodeInfo)
-
-        loading(binding.pbLoading)
-    }
-
-    private fun loading(loading: ComposeView){
-        loading.setContent { CircularProgressIndicator() }
-        viewModel.loadingState(loading)
     }
 }
