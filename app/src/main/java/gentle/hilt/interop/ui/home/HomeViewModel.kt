@@ -1,5 +1,7 @@
 package gentle.hilt.interop.ui.home
 
+import android.view.View
+import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -8,6 +10,9 @@ import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gentle.hilt.interop.network.NetworkRepository
 import gentle.hilt.interop.network.paging.CharactersPagingSource
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,4 +25,21 @@ class HomeViewModel @Inject constructor(
     ) {
         CharactersPagingSource(repository)
     }.flow.cachedIn(viewModelScope)
+
+
+    fun observePages(grid: CharactersGridRecyclerView){
+        grid.pagedData = pagedFlow
+    }
+
+    @OptIn(FlowPreview::class)
+    fun loadingState(loading: ComposeView){
+        viewModelScope.launch {
+            repository.isLoading.debounce(200).collect{isLoading->
+                when (isLoading) {
+                    true -> loading.visibility = View.VISIBLE
+                    false -> loading.visibility = View.GONE
+                }
+            }
+        }
+    }
 }

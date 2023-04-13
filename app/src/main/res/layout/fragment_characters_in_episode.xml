@@ -18,24 +18,22 @@
 
     <gentle.hilt.interop.ui.home.details.episode.CharactersInEpisodeView
         android:id="@+id/charactersInEpisode"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="150dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/episodeInfo" />
-
-    <TextView
-        android:id="@+id/episodeNumberTest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello"
-        android:textSize="40sp"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/episodeInfo" />
+
+
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/pbLoading"
+        android:layout_width="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

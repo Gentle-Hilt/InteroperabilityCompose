@@ -18,8 +18,6 @@ class CharacterDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.testCharacterDetails.text = character.name
-
         binding.characterInEpisodes.episodes = character.episode
     }
 

@@ -2,6 +2,7 @@ package gentle.hilt.interop.network
 
 import android.content.Context
 import gentle.hilt.interop.R
+import gentle.hilt.interop.network.cache.Cache
 import gentle.hilt.interop.network.models.CharacterDetails
 import gentle.hilt.interop.network.models.EpisodeDetails
 import gentle.hilt.interop.network.models.GetCharactersPage
@@ -28,18 +29,28 @@ class NetworkRepository @Inject constructor(
 
     suspend fun getEpisode(episodeId: Int): EpisodeDetails? {
         isLoading.value = true
+        val cachedEpisode = Cache.episode[episodeId]
+        if(cachedEpisode != null){
+            isLoading.value = false
+            return cachedEpisode
+        }
         val request = apiClient.getEpisode(episodeId)
         isLoading.value = false
 
         if (!request.isSuccessful || request.failed) {
             return request.bodyNullable
         }
-
+        Cache.episode[episodeId] = request.body
         return request.body
     }
 
-    suspend fun getCharactesrs(characters: List<String>): List<CharacterDetails>? {
+    suspend fun getCharacters(characters: List<String>): List<CharacterDetails>? {
         isLoading.value = true
+        val cachedCharacters = Cache.charactersInEpisode[characters]
+        if(cachedCharacters != null){
+            isLoading.value = false
+            return cachedCharacters
+        }
         val request = apiClient.getCharacters(characters)
         isLoading.value = false
 
@@ -47,6 +58,7 @@ class NetworkRepository @Inject constructor(
             return request.bodyNullable
         }
 
+        Cache.charactersInEpisode[characters] = request.body
         return request.body
     }
 }

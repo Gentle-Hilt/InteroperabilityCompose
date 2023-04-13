@@ -1,12 +1,16 @@
 package gentle.hilt.interop.ui.home.details.episode
 
+import android.view.View
+import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gentle.hilt.interop.network.NetworkRepository
 import gentle.hilt.interop.network.models.CharacterDetails
 import gentle.hilt.interop.network.models.EpisodeDetails
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,7 +18,7 @@ import javax.inject.Inject
 class CharactersInEpisodeViewModel @Inject constructor(
     private val repository: NetworkRepository
 ) : ViewModel() {
-    val episodeState = MutableStateFlow(EpisodeDetails())
+    private val episodeState = MutableStateFlow(EpisodeDetails())
     private val charactersState = MutableStateFlow<List<CharacterDetails>>(emptyList())
 
     fun fetchEpisodeDetails(episodeId: Int) {
@@ -26,7 +30,7 @@ class CharactersInEpisodeViewModel @Inject constructor(
                 link.substringAfterLast("/")
             }
 
-            val chResponse = repository.getCharactesrs(charactersInEpisode) ?: return@launch
+            val chResponse = repository.getCharacters(charactersInEpisode) ?: return@launch
             charactersState.value = chResponse
         }
     }
@@ -43,6 +47,19 @@ class CharactersInEpisodeViewModel @Inject constructor(
         viewModelScope.launch {
             episodeState.collect { episodeDetails ->
                 episodeInfoView.episodeInfo = episodeDetails
+            }
+        }
+    }
+
+
+    @OptIn(FlowPreview::class)
+    fun loadingState(loading: ComposeView){
+        viewModelScope.launch {
+            repository.isLoading.debounce(200).collect{isLoading->
+                when (isLoading) {
+                    true -> loading.visibility = View.VISIBLE
+                    false -> loading.visibility = View.GONE
+                }
             }
         }
     }
