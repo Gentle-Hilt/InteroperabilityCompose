@@ -6,12 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.details.episode.CharactersInEpisodeFragment">
 
+
+    <gentle.hilt.interop.ui.home.details.episode.EpisodeInfoView
+        android:id="@+id/episodeInfo"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        />
+
+    <gentle.hilt.interop.ui.home.details.episode.CharactersInEpisodeView
+        android:id="@+id/charactersInEpisode"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="150dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/episodeInfo" />
+
     <TextView
         android:id="@+id/episodeNumberTest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello"
         android:textSize="40sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

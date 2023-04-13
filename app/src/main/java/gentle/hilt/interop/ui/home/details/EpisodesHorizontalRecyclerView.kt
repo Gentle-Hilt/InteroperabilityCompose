@@ -23,7 +23,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -107,18 +106,18 @@ class EpisodesHorizontalRecyclerView @JvmOverloads constructor(
 ) : AbstractComposeView(context, attrs, defStyleAttr) {
 
     var episodes: List<String>
-        get() = episodesState.value
+        get() = episodesState
         set(value) {
-            episodesState.value = value
+            episodesState.clear()
+            episodesState.addAll(value)
         }
 
-    private val episodesState = mutableStateOf<List<String>>(listOf())
-
+    private val episodesState = mutableListOf<String>()
     private val navController by lazy { findNavController() }
 
     @Composable
     override fun Content() {
-        HorizontalRecyclerView(episodes = episodesState.value, navController)
+        HorizontalRecyclerView(episodes = episodesState, navController)
     }
 }
 

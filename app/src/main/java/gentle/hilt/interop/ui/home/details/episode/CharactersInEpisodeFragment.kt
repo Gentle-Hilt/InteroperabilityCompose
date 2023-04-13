@@ -16,7 +16,6 @@ class CharactersInEpisodeFragment : Fragment() {
     private val viewModel: CharactersInEpisodeViewModel by viewModels()
 
     private val args: CharactersInEpisodeFragmentArgs by navArgs()
-    lateinit var episode: String
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,11 +27,14 @@ class CharactersInEpisodeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        episode = args.episode.toString()
+        viewModel.fetchEpisodeDetails(args.episode)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.episodeNumberTest.text = episode
+        binding.episodeNumberTest.text = args.episode.toString()
+
+        viewModel.observeCharacters(binding.charactersInEpisode)
+        viewModel.observeEpisodeInfo(binding.episodeInfo)
     }
 }

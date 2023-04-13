@@ -94,5 +94,4 @@ dependencies {
     implementation(libs.compose.runtime.livedata)
     implementation(libs.compose.coil)
     implementation(libs.compose.paging)
-
 }

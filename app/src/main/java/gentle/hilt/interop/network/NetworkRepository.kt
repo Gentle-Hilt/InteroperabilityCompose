@@ -2,6 +2,8 @@ package gentle.hilt.interop.network
 
 import android.content.Context
 import gentle.hilt.interop.R
+import gentle.hilt.interop.network.models.CharacterDetails
+import gentle.hilt.interop.network.models.EpisodeDetails
 import gentle.hilt.interop.network.models.GetCharactersPage
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
@@ -15,6 +17,30 @@ class NetworkRepository @Inject constructor(
     suspend fun getCharactersPage(pageIndex: Int): GetCharactersPage? {
         isLoading.value = true
         val request = apiClient.getCharactersPage(pageIndex)
+        isLoading.value = false
+
+        if (!request.isSuccessful || request.failed) {
+            return request.bodyNullable
+        }
+
+        return request.body
+    }
+
+    suspend fun getEpisode(episodeId: Int): EpisodeDetails? {
+        isLoading.value = true
+        val request = apiClient.getEpisode(episodeId)
+        isLoading.value = false
+
+        if (!request.isSuccessful || request.failed) {
+            return request.bodyNullable
+        }
+
+        return request.body
+    }
+
+    suspend fun getCharactesrs(characters: List<String>): List<CharacterDetails>? {
+        isLoading.value = true
+        val request = apiClient.getCharacters(characters)
         isLoading.value = false
 
         if (!request.isSuccessful || request.failed) {
