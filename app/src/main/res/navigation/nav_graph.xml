@@ -31,8 +31,8 @@
         tools:layout="@layout/fragment_slideshow" />
     <fragment
         android:id="@+id/characterDetailsFragment"
+        android:label="@string/character_details"
         android:name="gentle.hilt.interop.ui.home.details.CharacterDetailsFragment"
-        android:label="fragment_character_details"
         tools:layout="@layout/fragment_character_details" >
 
         <argument
@@ -44,8 +44,8 @@
     </fragment>
     <fragment
         android:id="@+id/charactersInEpisodeFragment"
+        android:label="@string/episode_details"
         android:name="gentle.hilt.interop.ui.home.details.episode.CharactersInEpisodeFragment"
-        android:label="fragment_characters_in_episode"
         tools:layout="@layout/fragment_characters_in_episode" >
 
 

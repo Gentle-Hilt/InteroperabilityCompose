@@ -27,7 +27,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -39,7 +38,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,24 +58,22 @@ fun Item(character: CharacterDetails, navController: NavController) {
     val action = HomeFragmentDirections.actionNavHomeToCharacterDetailsFragment(character)
     // Managing your item functionality and look at one place
     Card(
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .height(200.dp)
             .width(150.dp)
-            .padding(8.dp)
+            .padding(5.dp)
             .clickable { navController.navigate(action) }
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .border(3.dp, Color.White, RoundedCornerShape(10))
-                .clip(RoundedCornerShape(10))
+                .border(3.dp, Color.Gray, RoundedCornerShape(10.dp))
         ) {
             Image(
                 painter = rememberAsyncImagePainter(character.image),
                 contentDescription = null,
                 modifier = Modifier
-                    .clip(RoundedCornerShape(10))
                     .fillMaxSize(),
                 contentScale = ContentScale.Crop
             )

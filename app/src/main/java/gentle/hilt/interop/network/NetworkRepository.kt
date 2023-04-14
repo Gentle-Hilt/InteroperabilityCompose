@@ -118,20 +118,3 @@ sealed class NetworkStatus {
     object Available : NetworkStatus()
     object Unavailable : NetworkStatus()
 }
-
-fun checkConnected2(connectivityManager: ConnectivityManager): Boolean {
-    val activeNetwork = connectivityManager.activeNetwork
-    activeNetwork ?: return false
-    val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
-    capabilities ?: return false
-    return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || capabilities.hasTransport(
-        NetworkCapabilities.TRANSPORT_WIFI
-    )
-
-}
-
-fun Context.connected2(): Boolean{
-    val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    return checkConnected2(connectivityManager)
-}
-
