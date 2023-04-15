@@ -34,6 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.savedstate.findViewTreeSavedStateRegistryOwner
+import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import coil.compose.rememberAsyncImagePainter
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
 
@@ -105,6 +107,12 @@ class EpisodesHorizontalRecyclerView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : AbstractComposeView(context, attrs, defStyleAttr) {
 
+    // You don't wanna render problems, do you?
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        setViewTreeSavedStateRegistryOwner(findViewTreeSavedStateRegistryOwner())
+    }
+
     var episodes: List<String>
         get() = episodesState
         set(value) {
@@ -113,11 +121,10 @@ class EpisodesHorizontalRecyclerView @JvmOverloads constructor(
         }
 
     private val episodesState = mutableListOf<String>()
-    private val navController by lazy { findNavController() }
 
     @Composable
     override fun Content() {
-        HorizontalRecyclerView(episodes = episodesState, navController)
+        HorizontalRecyclerView(episodes = episodesState, findNavController())
     }
 }
 

@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -27,22 +29,21 @@ import gentle.hilt.interop.R
 import gentle.hilt.interop.databinding.FragmentHomeBinding
 import gentle.hilt.interop.network.NetworkStatus
 
-
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         checkInternet()
         reconnect()
         loading(binding.pbLoading)
-
     }
 
     private fun checkInternet() {
         if (!viewModel.connected()) {
-            binding.noNetwork.visibility = View.GONE
+            binding.noNetwork.visibility = View.VISIBLE
             binding.noNetwork.setContent { ErrorMessage() }
         }
     }
@@ -63,9 +64,15 @@ class HomeFragment : Fragment() {
         }
     }
 
-
     private fun loading(pbLoading: ComposeView) {
-        binding.pbLoading.setContent { CircularProgressIndicator() }
+        pbLoading.setContent {
+            CircularProgressIndicator(
+                modifier = Modifier.size(50.dp),
+                color = Color.Green,
+                strokeWidth = 7.dp
+
+            )
+        }
         viewModel.loadingState(pbLoading)
     }
 
@@ -91,14 +98,14 @@ fun ErrorMessage() {
             text = stringResource(R.string.failed_to_load),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colors.error
+            color = Color.White
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = stringResource(R.string.check_internet),
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium,
-            color = MaterialTheme.colors.error
+            color = Color.White
         )
     }
 }

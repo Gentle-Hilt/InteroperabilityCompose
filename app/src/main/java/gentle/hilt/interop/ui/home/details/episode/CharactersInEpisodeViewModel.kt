@@ -1,6 +1,7 @@
 package gentle.hilt.interop.ui.home.details.episode
 
 import android.view.View
+import android.widget.LinearLayout
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -54,11 +55,10 @@ class CharactersInEpisodeViewModel @Inject constructor(
         }
     }
 
-
     @OptIn(FlowPreview::class)
-    fun loadingState(loading: ComposeView){
+    fun loadingState(loading: ComposeView) {
         viewModelScope.launch {
-            repository.isLoading.debounce(200).collect{isLoading->
+            repository.isLoading.debounce(200).collect { isLoading ->
                 when (isLoading) {
                     true -> loading.visibility = View.VISIBLE
                     false -> loading.visibility = View.GONE
@@ -67,7 +67,7 @@ class CharactersInEpisodeViewModel @Inject constructor(
         }
     }
 
-    fun connected(): Boolean{
+    fun connected(): Boolean {
         return repository.connected()
     }
 }

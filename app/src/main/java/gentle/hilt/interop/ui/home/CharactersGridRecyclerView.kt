@@ -32,7 +32,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AbstractComposeView
@@ -46,6 +45,8 @@ import androidx.navigation.findNavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.savedstate.findViewTreeSavedStateRegistryOwner
+import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import coil.compose.rememberAsyncImagePainter
 import gentle.hilt.interop.R
 import gentle.hilt.interop.network.models.CharacterDetails
@@ -171,6 +172,12 @@ class CharactersGridRecyclerView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : AbstractComposeView(context, attrs, defStyleAttr) {
 
+    // You don't wanna render problems, do you?
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        setViewTreeSavedStateRegistryOwner(findViewTreeSavedStateRegistryOwner())
+    }
+
     private val emptyPagedData = PagingData.empty<CharacterDetails>()
     private val emptyFlowPagedData: Flow<PagingData<CharacterDetails>> = flow {
         emit(emptyPagedData)
@@ -185,17 +192,17 @@ class CharactersGridRecyclerView @JvmOverloads constructor(
         set(value) {
             uiState.value = value
         }
-    private val navController by lazy { findNavController() }
 
     @Composable
     override fun Content() {
         //  Content now uses Grid composable to display the pagedData
-        Grid(characters = uiState.value, navController)
+        Grid(characters = uiState.value, findNavController())
     }
     companion object {
         const val gray: Long = 0xFF3c3e44
         const val fade_white: Long = 0xFF979792
         const val white: Long = 0xfff5f5f5
         const val light_dark: Long = 0xFF343541
+        const val bright_blue: Long = 0xff007FFF
     }
 }

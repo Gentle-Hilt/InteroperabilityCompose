@@ -29,6 +29,7 @@ kapt = "1.8.10"
 ktlint = "11.3.1"
 detekt = "1.23.0-RC1"
 legacy-support-v4 = "1.0.0"
+custom-view = "1.1.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -73,6 +74,8 @@ compose_ui_preview = { group = "androidx.compose.ui" , name = "ui-tooling-previe
 compose_coil = {group = "io.coil-kt", name = "coil-compose", version.ref = "coil_compose" }
 compose_paging = { group = "androidx.paging", name = "paging-compose", version.ref = "compose_paging" }
 legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacy-support-v4" }
+custom-view = {group = "androidx.customview", name = "customview", version.ref = "custom-view" }
+
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "com-android-application" }

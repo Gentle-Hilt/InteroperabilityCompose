@@ -21,7 +21,6 @@ class HomeViewModel @Inject constructor(
     private val repository: NetworkRepository
 ) : ViewModel() {
 
-
     val networkObserve = repository.networkStatus.asLiveData()
 
     private val pagedFlow = Pager(
@@ -30,15 +29,14 @@ class HomeViewModel @Inject constructor(
         CharactersPagingSource(repository)
     }.flow.cachedIn(viewModelScope)
 
-
-    fun loadPages(grid: CharactersGridRecyclerView){
+    fun loadPages(grid: CharactersGridRecyclerView) {
         grid.pagedData = pagedFlow
     }
 
     @OptIn(FlowPreview::class)
-    fun loadingState(loading: ComposeView){
+    fun loadingState(loading: ComposeView) {
         viewModelScope.launch {
-            repository.isLoading.debounce(200).collect{isLoading->
+            repository.isLoading.debounce(200).collect { isLoading ->
                 when (isLoading) {
                     true -> loading.visibility = View.VISIBLE
                     false -> loading.visibility = View.GONE
@@ -47,7 +45,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun connected(): Boolean{
+    fun connected(): Boolean {
         return repository.connected()
     }
 }

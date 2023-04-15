@@ -94,4 +94,9 @@ dependencies {
     implementation(libs.compose.runtime.livedata)
     implementation(libs.compose.coil)
     implementation(libs.compose.paging)
+
+    // Render problem
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.compose.ui.preview)
+    debugImplementation(libs.custom.view)
 }

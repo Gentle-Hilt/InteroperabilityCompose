@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,12 +21,24 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -43,6 +56,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import gentle.hilt.interop.R
 import gentle.hilt.interop.databinding.FragmentCharacterDetailsBinding
 import gentle.hilt.interop.network.models.CharacterDetails
+import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.bright_blue
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.fade_white
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.white
@@ -52,40 +66,49 @@ import java.util.Locale
 class CharacterDetailsFragment : Fragment() {
     lateinit var binding: FragmentCharacterDetailsBinding
     private val viewModel: CharacterDetailsViewModel by viewModels()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.characterInEpisodes.episodes = character.episode
         detailsInLandScapeMode()
         binding.chImage.setContent {
             CharacterImage()
         }
 
+        binding.btnAdd.setContent {
+            AddButton {
+                // TODO saving favorite character functionality
+            }
+        }
+
         binding.apply {
             chName.setContent {
-                BoxWithRowAndFadeTittle("Name"){
+                BoxWithRowAndFadeTittle("Name:") {
                     Text(character.name, color = Color(white), fontSize = 20.sp)
                 }
             }
 
             chStatusGender.setContent {
-                BoxWithRowAndFadeTittle("Status"){
-                    StatusDot()
-                    Spacer(Modifier.width(4.dp))
+                BoxWithRowAndFadeTittle("Status:") {
                     Text(character.status, color = Color.White, fontSize = 20.sp)
+                    Spacer(Modifier.width(4.dp))
+                    StatusDot()
                     Spacer(Modifier.width(8.dp))
                     Text("Gender", color = Color(fade_white), fontWeight = FontWeight.Bold, fontSize = 20.sp)
                     ImageGender()
+                    Spacer(Modifier.width(8.dp))
                 }
             }
 
             chLocation.setContent {
-                BoxWithRowAndFadeTittle("Location"){
+                BoxWithRowAndFadeTittle("Location:") {
                     Text(color = Color(white), text = character.location.name.capitalize(), fontSize = 18.sp)
                 }
             }
 
             chOrigin.setContent {
-                BoxWithRowAndFadeTittle("Origin") {
+                BoxWithRowAndFadeTittle("Origin:") {
                     Text(color = Color(white), text = character.origin.name.capitalize(), fontSize = 18.sp)
                 }
             }
@@ -111,7 +134,7 @@ class CharacterDetailsFragment : Fragment() {
         return binding.root
     }
 
-    private fun detailsInLandScapeMode(){
+    private fun detailsInLandScapeMode() {
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             val constrainLayout: ConstraintLayout = binding.clDetails
@@ -120,23 +143,57 @@ class CharacterDetailsFragment : Fragment() {
 
             set.clear(R.id.chImage, ConstraintSet.END)
             set.clear(R.id.chImage, ConstraintSet.START)
-            set.connect(R.id.chImage, ConstraintSet.START, R.id.clChTextInfo, ConstraintSet.END)
+            set.connect(R.id.chImage, ConstraintSet.END, R.id.clChTextInfo, ConstraintSet.START, 20)
             set.connect(R.id.clChTextInfo, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+            set.connect(R.id.btnAdd, ConstraintSet.START, R.id.clChTextInfo, ConstraintSet.END)
 
             set.applyTo(constrainLayout)
         }
+    }
 
+    @Composable
+    fun AddButton(onClick: () -> Unit) {
+        var bottom = 70.dp
+        var end = 20.dp
+        val orientation = LocalContext.current.resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            bottom = 0.dp
+            end = 0.dp
+        }
 
+        var isClicked by remember { mutableStateOf(false) }
+        val scale by animateFloatAsState(if (isClicked) 0.8f else 1f, label = "")
+
+        Button(
+            onClick = {
+                isClicked = true
+                onClick()
+            },
+            colors = ButtonDefaults.buttonColors(Color(bright_blue)),
+            modifier = Modifier
+                .scale(scale)
+                .graphicsLayer(transformOrigin = TransformOrigin.Center)
+                .padding(bottom = bottom, end = end)
+                .size(60.dp)
+                .clip(CircleShape)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Add Button",
+                tint = Color.White,
+                modifier = Modifier.size(36.dp)
+            )
+        }
     }
 
     @Composable
     fun CharacterImage() {
         val orientation = LocalContext.current.resources.configuration.orientation
-        if (orientation == Configuration.ORIENTATION_PORTRAIT){
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             Box(
                 modifier = Modifier
                     .aspectRatio(1f)
-                    .padding(start= 55.dp, end = 55.dp, bottom = 90.dp, top = 20.dp)
+                    .padding(start = 55.dp, end = 55.dp, bottom = 90.dp, top = 20.dp)
                     .border(3.dp, Color.Gray, RoundedCornerShape(10.dp))
             ) {
                 Image(
@@ -147,8 +204,7 @@ class CharacterDetailsFragment : Fragment() {
 
                 )
             }
-
-        }else{
+        } else {
             Box(
                 modifier = Modifier
                     .size(180.dp)
@@ -164,11 +220,10 @@ class CharacterDetailsFragment : Fragment() {
                 )
             }
         }
-
     }
 
     @Composable
-    fun ImageGender(){
+    fun ImageGender() {
         Image(
             painter = painterResource(
                 id = when (character.gender.lowercase()) {
@@ -183,7 +238,7 @@ class CharacterDetailsFragment : Fragment() {
     }
 
     @Composable
-    fun StatusDot(){
+    fun StatusDot() {
         Box(
             Modifier.size(8.dp).background(
                 when (character.status.lowercase()) {
@@ -207,31 +262,24 @@ class CharacterDetailsFragment : Fragment() {
                     .padding(8.dp)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-
                     Text("$chTittleInfo ", color = Color(fade_white), fontSize = 18.sp, textAlign = TextAlign.Start)
 
                     content()
                 }
-
             }
         } else {
             Box(
                 Modifier
                     .background(Color(gray), RoundedCornerShape(8.dp))
                     .wrapContentSize()
-                    .padding(bottom = 5.dp,start = 5.dp,top = 5.dp)
+                    .padding(bottom = 5.dp, start = 5.dp, top = 5.dp)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-
                     Text("$chTittleInfo ", color = Color(fade_white), fontSize = 18.sp)
 
                     content()
                 }
-
             }
         }
-
-
-
     }
 }

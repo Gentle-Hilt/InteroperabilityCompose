@@ -38,6 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.savedstate.findViewTreeSavedStateRegistryOwner
+import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import coil.compose.rememberAsyncImagePainter
 import gentle.hilt.interop.network.models.CharacterDetails
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
@@ -99,6 +101,8 @@ fun CharactersInEpisodeList(characters: List<CharacterDetails>, navController: N
         modifier = Modifier
             .border(3.dp, Color.White, RoundedCornerShape(10.dp))
             .clip(RoundedCornerShape(10))
+            .padding(bottom = 40.dp)
+
     ) {
         LazyVerticalGrid(
             state = rememberLazyGridState(),
@@ -116,8 +120,11 @@ class CharactersInEpisodeView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : AbstractComposeView(context, attrs, defStyleAttr) {
-
-    private val navController by lazy { findNavController() }
+    // You don't wanna render problems, do you?
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        setViewTreeSavedStateRegistryOwner(findViewTreeSavedStateRegistryOwner())
+    }
 
     var characters: List<CharacterDetails>
         get() = charactersState
@@ -129,6 +136,6 @@ class CharactersInEpisodeView @JvmOverloads constructor(
 
     @Composable
     override fun Content() {
-        CharactersInEpisodeList(charactersState, navController)
+        CharactersInEpisodeList(charactersState, findNavController())
     }
 }

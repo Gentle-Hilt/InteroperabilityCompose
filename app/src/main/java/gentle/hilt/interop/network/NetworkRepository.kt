@@ -37,7 +37,7 @@ class NetworkRepository @Inject constructor(
     suspend fun getEpisode(episodeId: Int): EpisodeDetails? {
         isLoading.value = true
         val cachedEpisode = Cache.episode[episodeId]
-        if(cachedEpisode != null){
+        if (cachedEpisode != null) {
             isLoading.value = false
             return cachedEpisode
         }
@@ -54,7 +54,7 @@ class NetworkRepository @Inject constructor(
     suspend fun getCharacters(characters: List<String>): List<CharacterDetails>? {
         isLoading.value = true
         val cachedCharacters = Cache.charactersInEpisode[characters]
-        if(cachedCharacters != null){
+        if (cachedCharacters != null) {
             isLoading.value = false
             return cachedCharacters
         }
@@ -68,7 +68,6 @@ class NetworkRepository @Inject constructor(
         Cache.charactersInEpisode[characters] = request.body
         return request.body
     }
-
 
     private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     private val validNetworks: MutableSet<Network> = HashSet()
@@ -89,7 +88,6 @@ class NetworkRepository @Inject constructor(
                 validNetworks.remove(network)
                 trySend(NetworkStatus.Unavailable).isSuccess
             }
-
         }
 
         val request = NetworkRequest.Builder()
@@ -101,8 +99,6 @@ class NetworkRepository @Inject constructor(
             connectivityManager.unregisterNetworkCallback(networkStatusCallback)
         }
     }.distinctUntilChanged()
-
-
 
     fun connected(): Boolean {
         return validNetworks.any { network ->
