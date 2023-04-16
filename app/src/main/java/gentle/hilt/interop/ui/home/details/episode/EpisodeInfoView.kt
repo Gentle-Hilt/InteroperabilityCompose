@@ -22,11 +22,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import gentle.hilt.interop.R
 import gentle.hilt.interop.network.models.EpisodeDetails
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.white
@@ -37,6 +42,12 @@ import java.util.Locale
 
 @Composable
 fun BoxWithText(value: String) {
+    val robotoFontFamily = FontFamily(
+        Font(R.font.roboto_italic, FontWeight.Normal),
+        Font(R.font.roboto_bold, FontWeight.Bold),
+        Font(R.font.roboto_bold_italic, FontWeight.Bold, FontStyle.Italic)
+    )
+
     val orientation = LocalContext.current.resources.configuration.orientation
     if (orientation == Configuration.ORIENTATION_PORTRAIT) {
         Box(
@@ -51,6 +62,7 @@ fun BoxWithText(value: String) {
                     "$value ",
                     color = Color(white),
                     fontSize = 18.sp,
+                    fontFamily = robotoFontFamily,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -69,6 +81,7 @@ fun BoxWithText(value: String) {
                     "$value ",
                     color = Color(white),
                     fontSize = 18.sp,
+                    fontFamily = robotoFontFamily,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.wrapContentSize()
                 )

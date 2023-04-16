@@ -9,7 +9,7 @@ import gentle.hilt.interop.R
 import gentle.hilt.interop.network.cache.Cache
 import gentle.hilt.interop.network.models.CharacterDetails
 import gentle.hilt.interop.network.models.EpisodeDetails
-import gentle.hilt.interop.network.models.GetCharactersPage
+import gentle.hilt.interop.network.models.CharactersPage
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.callbackFlow
@@ -22,7 +22,7 @@ class NetworkRepository @Inject constructor(
 ) {
     val exceptionNetworkMessage: String = "${context.getString(R.string.check_internet)} \n" + context.getString(R.string.failed_to_load)
     val isLoading = MutableStateFlow(false)
-    suspend fun getCharactersPage(pageIndex: Int): GetCharactersPage? {
+    suspend fun getCharactersPage(pageIndex: Int): CharactersPage? {
         isLoading.value = true
         val request = apiClient.getCharactersPage(pageIndex)
         isLoading.value = false

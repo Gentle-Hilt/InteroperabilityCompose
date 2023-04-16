@@ -37,6 +37,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,6 +60,11 @@ import kotlinx.coroutines.flow.flow
 
 @Composable
 fun Item(character: CharacterDetails, navController: NavController) {
+    val robotoFontFamily = FontFamily(
+        Font(R.font.roboto_italic, FontWeight.Normal),
+        Font(R.font.roboto_bold, FontWeight.Bold),
+        Font(R.font.roboto_bold_italic, FontWeight.Bold, FontStyle.Italic)
+    )
     val action = HomeFragmentDirections.actionNavHomeToCharacterDetailsFragment(character)
     // Managing your item functionality and look at one place
     Card(
@@ -88,6 +97,7 @@ fun Item(character: CharacterDetails, navController: NavController) {
                     text = character.name,
                     color = Color.White,
                     fontSize = 20.sp,
+                    fontFamily = robotoFontFamily,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -204,5 +214,6 @@ class CharactersGridRecyclerView @JvmOverloads constructor(
         const val white: Long = 0xfff5f5f5
         const val light_dark: Long = 0xFF343541
         const val bright_blue: Long = 0xff007FFF
+        const val red_bright: Long = 0xffF10449
     }
 }

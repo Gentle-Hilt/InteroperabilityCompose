@@ -2,14 +2,15 @@ package gentle.hilt.interop.network
 
 import gentle.hilt.interop.network.models.CharacterDetails
 import gentle.hilt.interop.network.models.EpisodeDetails
-import gentle.hilt.interop.network.models.GetCharactersPage
+import gentle.hilt.interop.network.models.CharactersPage
+import gentle.hilt.interop.network.service.ApiService
 import retrofit2.Response
 import javax.inject.Inject
 
 class ApiClient @Inject constructor(
     private val apiService: ApiService
 ) {
-    suspend fun getCharactersPage(pageIndex: Int): ResponseState<GetCharactersPage> {
+    suspend fun getCharactersPage(pageIndex: Int): ResponseState<CharactersPage> {
         return safeApiCall { apiService.fetchCharactersPage(pageIndex) }
     }
 

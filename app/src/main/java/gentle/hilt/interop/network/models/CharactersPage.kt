@@ -1,6 +1,6 @@
 package gentle.hilt.interop.network.models
 
-data class GetCharactersPage(
+data class CharactersPage(
     val info: PageInfo = PageInfo(),
     val results: List<CharacterDetails> = emptyList()
 )

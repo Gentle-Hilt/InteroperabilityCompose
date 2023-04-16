@@ -33,6 +33,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,11 +45,18 @@ import androidx.navigation.findNavController
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import coil.compose.rememberAsyncImagePainter
+import gentle.hilt.interop.R
 import gentle.hilt.interop.network.models.CharacterDetails
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
 
 @Composable
 fun CharacterInEpisode(character: CharacterDetails, navController: NavController) {
+
+    val robotoFontFamily = FontFamily(
+        Font(R.font.roboto_italic, FontWeight.Normal),
+        Font(R.font.roboto_bold, FontWeight.Bold),
+        Font(R.font.roboto_bold_italic, FontWeight.Bold, FontStyle.Italic)
+    )
     val action = CharactersInEpisodeFragmentDirections.actionCharactersInEpisodeFragmentToCharacterDetailsFragment(character)
     Card(
         shape = RoundedCornerShape(8.dp),
@@ -79,6 +90,8 @@ fun CharacterInEpisode(character: CharacterDetails, navController: NavController
                     text = character.name,
                     color = Color.White,
                     fontSize = 20.sp,
+                    fontFamily = robotoFontFamily,
+                    fontStyle = FontStyle.Italic,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
