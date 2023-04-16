@@ -48,15 +48,12 @@ import coil.compose.rememberAsyncImagePainter
 import gentle.hilt.interop.R
 import gentle.hilt.interop.network.models.CharacterDetails
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
+import gentle.hilt.interop.ui.home.robotoFontFamily
 
 @Composable
 fun CharacterInEpisode(character: CharacterDetails, navController: NavController) {
 
-    val robotoFontFamily = FontFamily(
-        Font(R.font.roboto_italic, FontWeight.Normal),
-        Font(R.font.roboto_bold, FontWeight.Bold),
-        Font(R.font.roboto_bold_italic, FontWeight.Bold, FontStyle.Italic)
-    )
+
     val action = CharactersInEpisodeFragmentDirections.actionCharactersInEpisodeFragmentToCharacterDetailsFragment(character)
     Card(
         shape = RoundedCornerShape(8.dp),

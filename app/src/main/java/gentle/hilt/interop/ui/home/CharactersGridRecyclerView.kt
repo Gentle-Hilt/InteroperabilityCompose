@@ -37,10 +37,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,11 +56,7 @@ import kotlinx.coroutines.flow.flow
 
 @Composable
 fun Item(character: CharacterDetails, navController: NavController) {
-    val robotoFontFamily = FontFamily(
-        Font(R.font.roboto_italic, FontWeight.Normal),
-        Font(R.font.roboto_bold, FontWeight.Bold),
-        Font(R.font.roboto_bold_italic, FontWeight.Bold, FontStyle.Italic)
-    )
+
     val action = HomeFragmentDirections.actionNavHomeToCharacterDetailsFragment(character)
     // Managing your item functionality and look at one place
     Card(

@@ -35,6 +35,7 @@ import gentle.hilt.interop.R
 import gentle.hilt.interop.network.models.EpisodeDetails
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.white
+import gentle.hilt.interop.ui.home.robotoFontFamily
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.Date
@@ -42,11 +43,6 @@ import java.util.Locale
 
 @Composable
 fun BoxWithText(value: String) {
-    val robotoFontFamily = FontFamily(
-        Font(R.font.roboto_italic, FontWeight.Normal),
-        Font(R.font.roboto_bold, FontWeight.Bold),
-        Font(R.font.roboto_bold_italic, FontWeight.Bold, FontStyle.Italic)
-    )
 
     val orientation = LocalContext.current.resources.configuration.orientation
     if (orientation == Configuration.ORIENTATION_PORTRAIT) {

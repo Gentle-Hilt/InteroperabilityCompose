@@ -43,14 +43,11 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import coil.compose.rememberAsyncImagePainter
 import gentle.hilt.interop.R
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
+import gentle.hilt.interop.ui.home.robotoFontFamily
 
 @Composable
 fun Episode(episode: String, navController: NavController) {
-    val robotoFontFamily = FontFamily(
-        Font(R.font.roboto_italic, FontWeight.Normal),
-        Font(R.font.roboto_bold, FontWeight.Bold),
-        Font(R.font.roboto_bold_italic, FontWeight.Bold, FontStyle.Italic)
-    )
+
     val episodeNumber = episode.substringAfterLast("/").toInt()
     val action = CharacterDetailsFragmentDirections.actionCharacterDetailsFragmentToCharactersInEpisodeFragment(episodeNumber)
     val orientation = LocalContext.current.resources.configuration.orientation
