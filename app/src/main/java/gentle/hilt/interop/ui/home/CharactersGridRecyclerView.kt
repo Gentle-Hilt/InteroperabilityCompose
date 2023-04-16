@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AbstractComposeView
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -105,7 +106,7 @@ fun Grid(characters: Flow<PagingData<CharacterDetails>>, navController: NavContr
     // read collectAsLazyPagingItems description
     val lazyPaging = characters.collectAsLazyPagingItems()
 
-    val orientation = LocalContext.current.resources.configuration.orientation
+    val orientation = LocalConfiguration.current.orientation
     val numColumns = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
         2
     } else {

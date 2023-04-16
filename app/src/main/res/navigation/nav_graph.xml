@@ -13,7 +13,11 @@
 
         <action
             android:id="@+id/action_nav_home_to_characterDetailsFragment"
-            app:destination="@id/characterDetailsFragment" />
+            app:destination="@id/characterDetailsFragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:popExitAnim="@anim/slide_to_right"
+            app:popEnterAnim="@anim/slide_from_left"
+            />
 
 
     </fragment>
@@ -33,14 +37,21 @@
         android:id="@+id/characterDetailsFragment"
         android:label="@string/character_details"
         android:name="gentle.hilt.interop.ui.home.details.CharacterDetailsFragment"
-        tools:layout="@layout/fragment_character_details" >
+        tools:layout="@layout/fragment_character_details"
+        app:exitAnim="@anim/slide_from_right"
+
+        >
 
         <argument
             android:name="character"
             app:argType="gentle.hilt.interop.network.models.CharacterDetails" />
         <action
             android:id="@+id/action_characterDetailsFragment_to_charactersInEpisodeFragment"
-            app:destination="@id/charactersInEpisodeFragment" />
+            app:destination="@id/charactersInEpisodeFragment"
+            app:enterAnim="@anim/slide_from_bottom"
+            app:popExitAnim="@anim/slide_to_top"
+            app:popEnterAnim="@anim/slide_from_bottom"
+            />
     </fragment>
     <fragment
         android:id="@+id/charactersInEpisodeFragment"
@@ -48,14 +59,18 @@
         android:name="gentle.hilt.interop.ui.home.details.episode.CharactersInEpisodeFragment"
         tools:layout="@layout/fragment_characters_in_episode" >
 
-
         <argument
             android:name="episode"
             app:argType="integer"
             />
         <action
             android:id="@+id/action_charactersInEpisodeFragment_to_characterDetailsFragment"
-            app:destination="@id/characterDetailsFragment" />
+            app:destination="@id/characterDetailsFragment"
+            app:exitAnim="@anim/slide_from_bottom"
+            app:enterAnim="@anim/slide_from_top"
+            app:popExitAnim="@anim/slide_to_bottom"
+            app:popEnterAnim="@anim/slide_from_top"
+            />
 
     </fragment>
 

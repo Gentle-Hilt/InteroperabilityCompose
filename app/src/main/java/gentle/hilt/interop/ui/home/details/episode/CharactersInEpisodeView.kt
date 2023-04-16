@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AbstractComposeView
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -101,7 +102,7 @@ fun CharacterInEpisode(character: CharacterDetails, navController: NavController
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CharactersInEpisodeList(characters: List<CharacterDetails>, navController: NavController) {
-    val orientation = LocalContext.current.resources.configuration.orientation
+    val orientation = LocalConfiguration.current.orientation
     val numColumns = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
         2
     } else {

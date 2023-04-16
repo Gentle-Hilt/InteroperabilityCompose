@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AbstractComposeView
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -50,8 +51,7 @@ fun Episode(episode: String, navController: NavController) {
 
     val episodeNumber = episode.substringAfterLast("/").toInt()
     val action = CharacterDetailsFragmentDirections.actionCharacterDetailsFragmentToCharactersInEpisodeFragment(episodeNumber)
-    val orientation = LocalContext.current.resources.configuration.orientation
-
+    val orientation = LocalConfiguration.current.orientation
     var height = 250.dp
     var width = 250.dp
 
