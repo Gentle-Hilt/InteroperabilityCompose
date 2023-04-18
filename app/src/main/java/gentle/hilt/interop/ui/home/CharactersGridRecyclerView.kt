@@ -36,7 +36,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -57,7 +56,6 @@ import kotlinx.coroutines.flow.flow
 
 @Composable
 fun Item(character: CharacterDetails, navController: NavController) {
-
     val action = HomeFragmentDirections.actionNavHomeToCharacterDetailsFragment(character)
     // Managing your item functionality and look at one place
     Card(

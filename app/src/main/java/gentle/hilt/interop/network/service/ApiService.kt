@@ -1,8 +1,8 @@
 package gentle.hilt.interop.network.service
 
 import gentle.hilt.interop.network.models.CharacterDetails
-import gentle.hilt.interop.network.models.EpisodeDetails
 import gentle.hilt.interop.network.models.CharactersPage
+import gentle.hilt.interop.network.models.EpisodeDetails
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

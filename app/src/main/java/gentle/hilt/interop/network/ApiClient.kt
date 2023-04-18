@@ -1,8 +1,8 @@
 package gentle.hilt.interop.network
 
 import gentle.hilt.interop.network.models.CharacterDetails
-import gentle.hilt.interop.network.models.EpisodeDetails
 import gentle.hilt.interop.network.models.CharactersPage
+import gentle.hilt.interop.network.models.EpisodeDetails
 import gentle.hilt.interop.network.service.ApiService
 import retrofit2.Response
 import javax.inject.Inject
@@ -24,9 +24,14 @@ class ApiClient @Inject constructor(
 
     private inline fun <T> safeApiCall(apiCall: () -> Response<T>): ResponseState<T> {
         return try {
-            ResponseState.success(apiCall.invoke())
+            val response = apiCall.invoke()
+            if (response.isSuccessful) {
+                ResponseState.success(response)
+            } else {
+                ResponseState.failure(Exception("HTTP Error ${response.code()}"))
+            }
         } catch (e: Exception) {
-            ResponseState.failure(e)
+            ResponseState.failure(Exception("Network Error: ${e.message}"))
         }
     }
 }

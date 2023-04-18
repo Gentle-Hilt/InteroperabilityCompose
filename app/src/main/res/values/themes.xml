@@ -21,9 +21,14 @@
 
     <style name="Theme.Interop.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="Theme.Interop.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
+    <style name="Theme.Interop.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/white</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="popupMenuBackground">@color/main_background</item>
+    </style>
+
+
+    <style name="Theme.DrawerLayout" parent="Theme.MaterialComponents.Light">
+        <item name="colorPrimary">@color/drawer_pressed</item>
     </style>
 </resources>

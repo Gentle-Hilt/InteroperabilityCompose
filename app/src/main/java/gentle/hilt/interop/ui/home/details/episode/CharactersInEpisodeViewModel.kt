@@ -1,7 +1,6 @@
 package gentle.hilt.interop.ui.home.details.episode
 
 import android.view.View
-import android.widget.LinearLayout
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData

@@ -8,8 +8,8 @@ import android.net.NetworkRequest
 import gentle.hilt.interop.R
 import gentle.hilt.interop.network.cache.Cache
 import gentle.hilt.interop.network.models.CharacterDetails
-import gentle.hilt.interop.network.models.EpisodeDetails
 import gentle.hilt.interop.network.models.CharactersPage
+import gentle.hilt.interop.network.models.EpisodeDetails
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.callbackFlow

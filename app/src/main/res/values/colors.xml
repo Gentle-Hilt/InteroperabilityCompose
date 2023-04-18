@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="main_background">#272b33</color>
     <color name="main_appbar">#3c3e44</color>
+    <color name="drawer_background">#F5F5F5</color>
+    <color name="drawer_pressed">#E0E0E0</color>
+    <color name="link_color">#0a94da</color>
 </resources>

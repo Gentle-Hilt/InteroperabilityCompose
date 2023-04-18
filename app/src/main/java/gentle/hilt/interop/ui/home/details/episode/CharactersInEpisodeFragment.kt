@@ -58,11 +58,13 @@ class CharactersInEpisodeFragment : Fragment() {
                 NetworkStatus.Available -> {
                     viewModel.fetchEpisodeDetails(args.episode)
                     binding.noNetwork.visibility = View.GONE
+                    binding.linearLayout.visibility = View.VISIBLE
                 }
 
                 NetworkStatus.Unavailable -> {
                     viewModel.fetchEpisodeDetails(args.episode)
                     binding.noNetwork.visibility = View.GONE
+                    binding.linearLayout.visibility = View.VISIBLE
                 }
             }
         }

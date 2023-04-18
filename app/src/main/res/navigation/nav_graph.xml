@@ -15,6 +15,7 @@
             android:id="@+id/action_nav_home_to_characterDetailsFragment"
             app:destination="@id/characterDetailsFragment"
             app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
             app:popExitAnim="@anim/slide_to_right"
             app:popEnterAnim="@anim/slide_from_left"
             />
@@ -49,6 +50,7 @@
             android:id="@+id/action_characterDetailsFragment_to_charactersInEpisodeFragment"
             app:destination="@id/charactersInEpisodeFragment"
             app:enterAnim="@anim/slide_from_bottom"
+            app:exitAnim="@anim/slide_to_bottom"
             app:popExitAnim="@anim/slide_to_top"
             app:popEnterAnim="@anim/slide_from_bottom"
             />
@@ -66,7 +68,7 @@
         <action
             android:id="@+id/action_charactersInEpisodeFragment_to_characterDetailsFragment"
             app:destination="@id/characterDetailsFragment"
-            app:exitAnim="@anim/slide_from_bottom"
+            app:exitAnim="@anim/slide_to_top"
             app:enterAnim="@anim/slide_from_top"
             app:popExitAnim="@anim/slide_to_bottom"
             app:popEnterAnim="@anim/slide_from_top"

@@ -58,6 +58,7 @@ import coil.compose.rememberAsyncImagePainter
 import dagger.hilt.android.AndroidEntryPoint
 import gentle.hilt.interop.R
 import gentle.hilt.interop.databinding.FragmentCharacterDetailsBinding
+import gentle.hilt.interop.network.NetworkStatus
 import gentle.hilt.interop.network.models.CharacterDetails
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.fade_white
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
@@ -83,26 +84,39 @@ class CharacterDetailsFragment : Fragment() {
 
         binding.apply {
             chImage.setContent { CharacterImage() }
-            binding.btnAdd.setContent { FavoriteCharacterButton() }
             chName.setContent { BoxWithRowAndFadeTittle("Name:", character.name) {} }
             chStatusGender.setContent { StatusGender() }
+            btnAdd.setContent { FavoriteCharacterButton() }
             chLocation.setContent { BoxWithRowAndFadeTittle("Location:", character.location.name.capitalize()) {} }
             chOrigin.setContent { BoxWithRowAndFadeTittle("Origin:", character.origin.name.capitalize()) {} }
             characterInEpisodes.episodes = character.episode
         }
+        reconnect()
+    }
+
+    private fun reconnect() {
+        viewModel.networkState.observe(viewLifecycleOwner) { networkState ->
+            when (networkState) {
+                NetworkStatus.Available -> {
+                    binding.chImage.setContent { CharacterImage() }
+                }
+                NetworkStatus.Unavailable -> Unit
+            }
+        }
     }
 
     @Composable
-    fun StatusGender(){
+    fun StatusGender() {
         BoxWithRowAndFadeTittle("Status:", character.status.capitalize()) {
             Spacer(Modifier.width(4.dp))
             StatusDot()
             Spacer(Modifier.width(8.dp))
             Text(
-                "Gender:", color = Color(fade_white),
+                "Gender:",
+                color = Color(fade_white),
                 fontFamily = robotoFontFamily,
                 fontStyle = FontStyle.Italic,
-                fontSize = 20.sp,
+                fontSize = 20.sp
             )
             ImageGender()
         }
@@ -124,7 +138,7 @@ class CharacterDetailsFragment : Fragment() {
             ) {
                 when (liked) {
                     true -> PulsatingIcon(Icons.Default.Favorite, Color.Red)
-                    false -> PulsatingIcon(Icons.Default.Favorite, Color.Gray)
+                    false -> PulsatingIcon(Icons.Default.Favorite, Color.Black)
                 }
             }
         }
@@ -135,7 +149,7 @@ class CharacterDetailsFragment : Fragment() {
         icon: ImageVector,
         color: Color,
         pulseDuration: Int = 1000,
-        pulseMagnitude: Float = 1.1f,
+        pulseMagnitude: Float = 1.1f
     ) {
         val infiniteTransition = rememberInfiniteTransition(label = "")
 
@@ -157,9 +171,15 @@ class CharacterDetailsFragment : Fragment() {
         val orientation = LocalConfiguration.current.orientation
         val portrait: Boolean = orientation == Configuration.ORIENTATION_PORTRAIT
         val sizeModifier = if (portrait) Modifier.aspectRatio(1f) else Modifier.size(180.dp)
-        val paddingModifier = if (portrait) Modifier.padding(40.dp) else Modifier.padding(
-            start = 20.dp, bottom = 20.dp, top = 10.dp
-        )
+        val paddingModifier = if (portrait) {
+            Modifier.padding(40.dp)
+        } else {
+            Modifier.padding(
+                start = 20.dp,
+                bottom = 20.dp,
+                top = 10.dp
+            )
+        }
         val contentScale = if (portrait) ContentScale.Fit else ContentScale.Crop
         Box(
             modifier = Modifier
@@ -177,16 +197,21 @@ class CharacterDetailsFragment : Fragment() {
         }
     }
 
-
     @Composable
     fun BoxWithRowAndFadeTittle(tittle: String, info: String, content: @Composable () -> Unit) {
         val orientation = LocalConfiguration.current.orientation
         val portrait: Boolean = orientation == Configuration.ORIENTATION_PORTRAIT
 
         val sizeModifier = if (portrait) Modifier.fillMaxWidth() else Modifier.wrapContentSize()
-        val paddingModifier = if (portrait) Modifier.padding(8.dp) else Modifier.padding(
-            bottom = 5.dp, start = 5.dp, top = 5.dp
-        )
+        val paddingModifier = if (portrait) {
+            Modifier.padding(8.dp)
+        } else {
+            Modifier.padding(
+                bottom = 5.dp,
+                start = 5.dp,
+                top = 5.dp
+            )
+        }
 
         Box(
             Modifier
@@ -204,7 +229,7 @@ class CharacterDetailsFragment : Fragment() {
                     color = Color(fade_white),
                     fontSize = 18.sp,
                     fontFamily = robotoFontFamily,
-                    fontStyle = FontStyle.Normal,
+                    fontStyle = FontStyle.Normal
                 )
 
                 Text(
@@ -212,14 +237,13 @@ class CharacterDetailsFragment : Fragment() {
                     color = Color(white),
                     fontSize = 18.sp,
                     fontFamily = robotoFontFamily,
-                    fontStyle = FontStyle.Normal,
+                    fontStyle = FontStyle.Normal
                 )
 
                 content()
             }
         }
     }
-
 
     @Composable
     fun ImageGender() {
@@ -265,7 +289,6 @@ class CharacterDetailsFragment : Fragment() {
             set.connect(R.id.btnAdd, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
             set.connect(R.id.btnAdd, ConstraintSet.TOP, R.id.appBarLayout, ConstraintSet.TOP, 20)
             set.connect(R.id.btnAdd, ConstraintSet.START, R.id.clChTextInfo, ConstraintSet.END)
-
 
             set.applyTo(constrainLayout)
         }
