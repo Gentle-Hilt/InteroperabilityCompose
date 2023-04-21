@@ -22,6 +22,13 @@ class ApiClient @Inject constructor(
         return safeApiCall { apiService.fetchMultipleCharacters(characters) }
     }
 
+    suspend fun searchCharacterPage(
+        characterName: String,
+        pageIndex: Int
+    ): ResponseState<CharactersPage> {
+        return safeApiCall { apiService.searchCharacterPage(characterName, pageIndex) }
+    }
+
     private inline fun <T> safeApiCall(apiCall: () -> Response<T>): ResponseState<T> {
         return try {
             val response = apiCall.invoke()

@@ -69,6 +69,18 @@ class NetworkRepository @Inject constructor(
         return request.body
     }
 
+    suspend fun searchCharacterPage(characterName: String, pageIndex: Int): CharactersPage? {
+        isLoading.value = true
+        val request = apiClient.searchCharacterPage(characterName, pageIndex)
+        isLoading.value = false
+
+        if (!request.isSuccessful || request.failed) {
+            return request.bodyNullable
+        }
+
+        return request.body
+    }
+
     private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     private val validNetworks: MutableSet<Network> = HashSet()
 

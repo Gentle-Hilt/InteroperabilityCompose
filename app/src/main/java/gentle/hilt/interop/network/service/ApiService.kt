@@ -24,4 +24,10 @@ interface ApiService {
     suspend fun fetchMultipleCharacters(
         @Path("list") charactersList: List<String>
     ): Response<List<CharacterDetails>>
+
+    @GET("character")
+    suspend fun searchCharacterPage(
+        @Query("name") characterName: String,
+        @Query("page") pageIndex: Int
+    ): Response<CharactersPage>
 }
