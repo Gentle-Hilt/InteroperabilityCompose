@@ -71,13 +71,18 @@ class NetworkRepository @Inject constructor(
 
     suspend fun searchCharacterPage(characterName: String, pageIndex: Int): CharactersPage? {
         isLoading.value = true
+        val searchCache = Cache.searchPage["$characterName-$pageIndex"]
+        if (searchCache != null) {
+            isLoading.value = false
+            return searchCache
+        }
         val request = apiClient.searchCharacterPage(characterName, pageIndex)
         isLoading.value = false
 
         if (!request.isSuccessful || request.failed) {
             return request.bodyNullable
         }
-
+        Cache.searchPage["$characterName-$pageIndex"] = request.body
         return request.body
     }
 

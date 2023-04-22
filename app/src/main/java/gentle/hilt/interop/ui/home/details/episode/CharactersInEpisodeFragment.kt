@@ -4,12 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -30,7 +24,6 @@ class CharactersInEpisodeFragment : Fragment() {
         checkInternet()
         viewModel.observeCharacters(binding.charactersInEpisode)
         viewModel.observeEpisodeInfo(binding.episodeInfo)
-        loading(binding.pbLoading)
         reconnect()
     }
 
@@ -39,17 +32,6 @@ class CharactersInEpisodeFragment : Fragment() {
             binding.noNetwork.visibility = View.VISIBLE
             binding.noNetwork.setContent { ErrorMessage() }
         }
-    }
-    private fun loading(loading: ComposeView) {
-        loading.setContent {
-            CircularProgressIndicator(
-                modifier = Modifier.size(50.dp),
-                color = Color.Green,
-                strokeWidth = 7.dp
-
-            )
-        }
-        viewModel.loadingState(loading)
     }
 
     private fun reconnect() {

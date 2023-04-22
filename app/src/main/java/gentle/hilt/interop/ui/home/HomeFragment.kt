@@ -9,14 +9,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -37,7 +34,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         checkInternet()
         reconnect()
-        loading(binding.pbLoading)
     }
 
     private fun checkInternet() {
@@ -61,18 +57,6 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-    }
-
-    private fun loading(pbLoading: ComposeView) {
-        pbLoading.setContent {
-            CircularProgressIndicator(
-                modifier = Modifier.size(50.dp),
-                color = Color.Green,
-                strokeWidth = 7.dp
-
-            )
-        }
-        viewModel.loadingState(pbLoading)
     }
 
     override fun onCreateView(

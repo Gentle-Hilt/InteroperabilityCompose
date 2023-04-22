@@ -1,11 +1,11 @@
 package gentle.hilt.interop.data.datastore
 
 import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
-import gentle.hilt.interop.data.datastore.DataStoreManager.PreferencesKeys.ANYTHING
+import gentle.hilt.interop.data.datastore.DataStoreManager.PreferencesKeys.MENU_STATE
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -18,14 +18,14 @@ class DataStoreManager @Inject constructor(
     val dataStore = appContext.dataStore
 
     private object PreferencesKeys {
-        val ANYTHING = stringPreferencesKey("anything")
+        val MENU_STATE = booleanPreferencesKey("MENU_STATE")
     }
 
-    suspend fun saveAnything(anything: String) = dataStore.edit { preferences ->
-        preferences[ANYTHING] = anything
+    suspend fun saveMenuState(open: Boolean) = dataStore.edit { preferences ->
+        preferences[MENU_STATE] = open
     }
 
-    val readAnything: Flow<String> = dataStore.data.map { preferences ->
-        preferences[ANYTHING] ?: ""
+    val readMenuState: Flow<Boolean> = dataStore.data.map { preferences ->
+        preferences[MENU_STATE] ?: false
     }
 }

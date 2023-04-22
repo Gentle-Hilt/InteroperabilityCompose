@@ -1,4 +1,3 @@
-
 package gentle.hilt.interop
 
 import android.content.Intent
@@ -11,7 +10,14 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.unit.dp
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -20,20 +26,26 @@ import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import gentle.hilt.interop.databinding.ActivityInteropBinding
 import gentle.hilt.interop.databinding.NavHeaderInteropBinding
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class InteropActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityInteropBinding
     private val viewModel: InteropViewModel by viewModels()
-    private val startActivityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
+    private val startActivityLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
+
+    @OptIn(FlowPreview::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityInteropBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.appBarMain.toolbar)
-
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home,
@@ -51,6 +63,21 @@ class InteropActivity : AppCompatActivity() {
         navHeaderBinding.apiLink.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://rickandmortyapi.com"))
             startActivityLauncher.launch(intent)
+        }
+
+        loadingBar(binding.appBarMain.pbLoading)
+
+        lifecycleScope.launch {
+            viewModel.readMenuState.debounce(300).collectLatest { searchMenuOpen ->
+                Timber.d("$searchMenuOpen")
+                when (searchMenuOpen) {
+                    true -> {
+                        binding.appBarMain.searchCharacter.pagedData = viewModel.pagedState.value
+                        binding.appBarMain.searchCharacter.visibility = View.VISIBLE
+                    }
+                    false -> { binding.appBarMain.searchCharacter.visibility = View.GONE }
+                }
+            }
         }
     }
 
@@ -79,7 +106,6 @@ class InteropActivity : AppCompatActivity() {
     private fun search() {
         val searchMenu = binding.appBarMain.toolbar.menu.findItem(R.id.action_search)
         val searchView = searchMenu.actionView as SearchView
-
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -102,16 +128,45 @@ class InteropActivity : AppCompatActivity() {
         })
 
         searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
+            viewModel.saveMenuState(hasFocus)
             if (!hasFocus) {
                 searchView.isIconified = true
             }
         }
     }
 
-    override fun onSupportNavigateUp() = navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    override fun onSupportNavigateUp() =
+        navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
 
     private val navController by lazy {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
         navHostFragment.navController
     }
+
+    private fun loadingBar(pbLoading: ComposeView) {
+        pbLoading.setContent {
+            CircularProgressIndicator(
+                modifier = Modifier.size(50.dp),
+                color = Color.Green,
+                strokeWidth = 7.dp
+
+            )
+        }
+        viewModel.loadingState(pbLoading)
+    }
+
+    /*private fun reconnect() {
+        viewModel.networkObserve.observe(this) { networkState ->
+            when (networkState) {
+                NetworkStatus.Available -> {
+                    viewModel.loadPages(binding.appBarMain.searchCharacter)
+
+                }
+                NetworkStatus.Unavailable -> {
+                    viewModel.loadPages(binding.appBarMain.searchCharacter)
+                }
+            }
+        }
+    }*/
 }
