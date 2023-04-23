@@ -18,9 +18,11 @@ import gentle.hilt.interop.network.paging.SearchCharacterPagingSource
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,8 +35,22 @@ class InteropViewModel @Inject constructor(
         emit(emptyPagedData)
     }
     val pagedState = MutableStateFlow(emptyFlowPagedData)
+    val isSearchExpanded = MutableStateFlow(false)
 
-    @OptIn(FlowPreview::class)
+    fun saveIsSearchExpandedState(isExpanded: Boolean) {
+        isSearchExpanded.value = isExpanded
+    }
+   /* private val pagingSource = SearchCharacterPagingSource(repository, searchQuery)
+    private val pagingFlow = Pager(
+        config = PagingConfig(
+            pageSize = 20,
+            prefetchDistance = 40
+        ),
+        pagingSourceFactory = { pagingSource }
+    ).flow.cachedIn(viewModelScope)*/
+
+    /*val pagedState2 = MutableStateFlow(pagingFlow)*/
+
     fun search(
         query: String,
         search: SearchMenuView,
@@ -49,7 +65,6 @@ class InteropViewModel @Inject constructor(
             ),
             pagingSourceFactory = { SearchCharacterPagingSource(repository, query) }
         ).flow
-            .debounce(500)
             .cachedIn(viewModelScope)
         pagedState.value = paging
 
@@ -58,6 +73,24 @@ class InteropViewModel @Inject constructor(
         search.hideKeyboard = searchListener
         search.navController = navController
         return paging
+    }
+
+    fun savePagedDataInRotation(search: SearchMenuView) {
+        viewModelScope.launch {
+            isSearchExpanded.collectLatest { isExpanded ->
+                Timber.d("$isExpanded from viewModel")
+                when (isExpanded) {
+                    true -> {
+                        search.pagedData = pagedState.value
+                        search.visibility = View.VISIBLE
+                    }
+
+                    false -> {
+                        search.visibility = View.GONE
+                    }
+                }
+            }
+        }
     }
 
     @OptIn(FlowPreview::class)
@@ -72,8 +105,59 @@ class InteropViewModel @Inject constructor(
         }
     }
 
-    fun saveMenuState(open: Boolean) = viewModelScope.launch {
-        dataStore.saveMenuState(open)
+    fun saveLastCharacterSearch(lastChSearch: String) = viewModelScope.launch {
+        Timber.d("saving name:$lastChSearch")
+        dataStore.saveLastCharacterSearch(lastChSearch)
     }
-    val readMenuState = dataStore.readMenuState
+
+    @OptIn(FlowPreview::class)
+    fun setPreviouslySearchedCharacter(searchView: SearchView) {
+        viewModelScope.launch {
+            dataStore.readLastCharacterSearch.debounce(50).collectLatest { lastCharacter ->
+                Timber.d("read name: $lastCharacter")
+                searchView.setQuery(lastCharacter, false)
+            }
+        }
+    }
+
+    // Creating paging source to not create it each time when user types something
+    // In device rotation it should not blink now, because we're reusing existing PagingSource
+    private var searchQuery = ""
+    private var pagingSource: SearchCharacterPagingSource? = null
+
+    init {
+        pagingSource = getPagingSource()
+    }
+    private fun getPagingSource(): SearchCharacterPagingSource {
+        if (pagingSource == null || pagingSource!!.invalid) {
+            pagingSource = SearchCharacterPagingSource(repository, searchQuery)
+        }
+        return pagingSource!!
+    }
+
+    val pagingFlow: Flow<PagingData<CharacterDetails>> =
+        Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                prefetchDistance = 40
+            ),
+            pagingSourceFactory = { getPagingSource() }
+        ).flow.cachedIn(viewModelScope)
+
+    fun updatedSearch(
+        query: String,
+        search: SearchMenuView,
+        navController: NavController,
+        searchListener: SearchView.OnQueryTextListener,
+        searchView: SearchView
+    ): Flow<PagingData<CharacterDetails>> {
+        searchQuery = query
+
+        search.clearFocus = searchView
+        search.hideKeyboard = searchListener
+        search.navController = navController
+        search.pagedData = pagingFlow
+        pagingSource?.invalidate()
+        return pagingFlow
+    }
 }

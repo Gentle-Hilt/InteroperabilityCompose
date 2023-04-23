@@ -81,8 +81,10 @@ fun Item(
                     navOptions
                 )
                 closeSearchList()
-                closeKeyboard()
+                searchView?.setQuery("", false)
+                searchView?.isIconified = true
                 searchView?.clearFocus()
+                searchView?.onActionViewCollapsed()
             }
     ) {
         Box(

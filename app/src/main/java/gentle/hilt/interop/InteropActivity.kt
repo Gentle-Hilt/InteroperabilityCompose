@@ -4,7 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.SearchView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,9 +28,7 @@ import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import gentle.hilt.interop.databinding.ActivityInteropBinding
 import gentle.hilt.interop.databinding.NavHeaderInteropBinding
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -40,7 +40,9 @@ class InteropActivity : AppCompatActivity() {
     private val startActivityLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
 
-    @OptIn(FlowPreview::class)
+    private lateinit var searchView: SearchView
+    private lateinit var searchMenu: MenuItem
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityInteropBinding.inflate(layoutInflater)
@@ -66,19 +68,6 @@ class InteropActivity : AppCompatActivity() {
         }
 
         loadingBar(binding.appBarMain.pbLoading)
-
-        lifecycleScope.launch {
-            viewModel.readMenuState.debounce(300).collectLatest { searchMenuOpen ->
-                Timber.d("$searchMenuOpen")
-                when (searchMenuOpen) {
-                    true -> {
-                        binding.appBarMain.searchCharacter.pagedData = viewModel.pagedState.value
-                        binding.appBarMain.searchCharacter.visibility = View.VISIBLE
-                    }
-                    false -> { binding.appBarMain.searchCharacter.visibility = View.GONE }
-                }
-            }
-        }
     }
 
     private fun backFromNavigationDrawerImplementation() {
@@ -99,23 +88,43 @@ class InteropActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_settings, menu)
         menuInflater.inflate(R.menu.menu_search, menu)
+        searchMenu = binding.appBarMain.toolbar.menu.findItem(R.id.action_search)
+        searchView = searchMenu.actionView as SearchView
+
+        searchView.imeOptions = EditorInfo.IME_FLAG_NO_FULLSCREEN
+
+        lifecycleScope.launch {
+            viewModel.isSearchExpanded.collectLatest { isExpanded ->
+                if (isExpanded) {
+                    Timber.d("$isExpanded watching")
+                    binding.appBarMain.searchCharacter.pagedData = viewModel.pagingFlow
+                    binding.appBarMain.searchCharacter.navController = navController
+                    binding.appBarMain.searchCharacter.visibility = View.VISIBLE
+                    searchView.isIconified = false
+                    searchView.requestFocus()
+                    viewModel.setPreviouslySearchedCharacter(searchView)
+                } else {
+                    binding.appBarMain.searchCharacter.visibility = View.GONE
+                    searchView.clearFocus()
+                    searchView.isIconified = true
+                }
+            }
+        }
         search()
         return true
     }
 
     private fun search() {
-        val searchMenu = binding.appBarMain.toolbar.menu.findItem(R.id.action_search)
-        val searchView = searchMenu.actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    viewModel.saveLastCharacterSearch(query)
+                }
                 return false
             }
             override fun onQueryTextChange(newText: String): Boolean {
-                if (newText.isEmpty()) {
-                    binding.appBarMain.searchCharacter.visibility = View.GONE
-                } else {
-                    binding.appBarMain.searchCharacter.visibility = View.VISIBLE
-                    viewModel.search(
+                if (newText.isNotEmpty()) {
+                    viewModel.updatedSearch(
                         newText,
                         binding.appBarMain.searchCharacter,
                         navController,
@@ -128,10 +137,8 @@ class InteropActivity : AppCompatActivity() {
         })
 
         searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
-            viewModel.saveMenuState(hasFocus)
-            if (!hasFocus) {
-                searchView.isIconified = true
-            }
+            Timber.d("$hasFocus")
+            viewModel.saveIsSearchExpandedState(hasFocus)
         }
     }
 
