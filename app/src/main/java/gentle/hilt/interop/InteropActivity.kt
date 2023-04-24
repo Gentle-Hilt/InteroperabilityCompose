@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.SearchView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.core.view.GravityCompat
-import androidx.lifecycle.lifecycleScope
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -28,9 +27,6 @@ import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import gentle.hilt.interop.databinding.ActivityInteropBinding
 import gentle.hilt.interop.databinding.NavHeaderInteropBinding
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class InteropActivity : AppCompatActivity() {
@@ -42,6 +38,7 @@ class InteropActivity : AppCompatActivity() {
 
     private lateinit var searchView: SearchView
     private lateinit var searchMenu: MenuItem
+    private lateinit var settingsMenu: MenuItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,33 +85,32 @@ class InteropActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_settings, menu)
         menuInflater.inflate(R.menu.menu_search, menu)
+        settingsMenu = binding.appBarMain.toolbar.menu.findItem(R.id.action_settings)
         searchMenu = binding.appBarMain.toolbar.menu.findItem(R.id.action_search)
         searchView = searchMenu.actionView as SearchView
-
-        searchView.imeOptions = EditorInfo.IME_FLAG_NO_FULLSCREEN
-
-        lifecycleScope.launch {
-            viewModel.isSearchExpanded.collectLatest { isExpanded ->
-                if (isExpanded) {
-                    Timber.d("$isExpanded watching")
-                    binding.appBarMain.searchCharacter.pagedData = viewModel.pagingFlow
-                    binding.appBarMain.searchCharacter.navController = navController
-                    binding.appBarMain.searchCharacter.visibility = View.VISIBLE
-                    searchView.isIconified = false
-                    searchView.requestFocus()
-                    viewModel.setPreviouslySearchedCharacter(searchView)
-                } else {
-                    binding.appBarMain.searchCharacter.visibility = View.GONE
-                    searchView.clearFocus()
-                    searchView.isIconified = true
-                }
-            }
-        }
-        search()
+        viewModel.observeMenuSearchState(binding.appBarMain.searchCharacter, navController, searchView)
+        searchListener()
+        drawerListener()
+        settingsListener()
         return true
     }
 
-    private fun search() {
+    private fun drawerListener() {
+        binding.drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
+            override fun onDrawerOpened(drawerView: View) {
+                searchView.clearFocus()
+            }
+        })
+    }
+
+    private fun settingsListener() {
+        settingsMenu.setOnMenuItemClickListener {
+            searchView.clearFocus()
+            true
+        }
+    }
+
+    private fun searchListener() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
@@ -124,21 +120,14 @@ class InteropActivity : AppCompatActivity() {
             }
             override fun onQueryTextChange(newText: String): Boolean {
                 if (newText.isNotEmpty()) {
-                    viewModel.updatedSearch(
-                        newText,
-                        binding.appBarMain.searchCharacter,
-                        navController,
-                        this,
-                        searchView
-                    )
+                    viewModel.updatedSearch(newText)
                 }
                 return true
             }
         })
 
         searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
-            Timber.d("$hasFocus")
-            viewModel.saveIsSearchExpandedState(hasFocus)
+            viewModel.saveMenuSearchState(hasFocus)
         }
     }
 
@@ -162,18 +151,4 @@ class InteropActivity : AppCompatActivity() {
         }
         viewModel.loadingState(pbLoading)
     }
-
-    /*private fun reconnect() {
-        viewModel.networkObserve.observe(this) { networkState ->
-            when (networkState) {
-                NetworkStatus.Available -> {
-                    viewModel.loadPages(binding.appBarMain.searchCharacter)
-
-                }
-                NetworkStatus.Unavailable -> {
-                    viewModel.loadPages(binding.appBarMain.searchCharacter)
-                }
-            }
-        }
-    }*/
 }

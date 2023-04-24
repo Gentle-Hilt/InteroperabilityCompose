@@ -3,7 +3,6 @@ package gentle.hilt.interop
 import android.content.Context
 import android.content.res.Configuration
 import android.util.AttributeSet
-import android.widget.SearchView
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,6 +30,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -48,19 +48,21 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.rememberAsyncImagePainter
+import gentle.hilt.interop.data.datastore.DataStoreManager
 import gentle.hilt.interop.network.models.CharacterDetails
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
 import gentle.hilt.interop.ui.home.robotoFontFamily
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 fun Item(
     character: CharacterDetails,
     navController: NavController?,
     closeSearchList: () -> Unit,
-    closeKeyboard: () -> Unit,
-    searchView: SearchView?
+    dataStore: DataStoreManager?
 ) {
     val navOptions = NavOptions.Builder()
         .setEnterAnim(R.anim.slide_from_right)
@@ -68,6 +70,7 @@ fun Item(
         .setPopExitAnim(R.anim.slide_to_right)
         .setPopEnterAnim(R.anim.slide_from_left)
         .build()
+    val coroutineScope = rememberCoroutineScope()
     Card(
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
@@ -81,10 +84,10 @@ fun Item(
                     navOptions
                 )
                 closeSearchList()
-                searchView?.setQuery("", false)
-                searchView?.isIconified = true
-                searchView?.clearFocus()
-                searchView?.onActionViewCollapsed()
+                coroutineScope.launch {
+                    Timber.d("dataStore false")
+                    dataStore?.saveSearchMenuState(false)
+                }
             }
     ) {
         Box(
@@ -125,8 +128,7 @@ fun Grid(
     characters: Flow<PagingData<CharacterDetails>>,
     navController: NavController?,
     closeSearchList: () -> Unit,
-    closeKeyboard: () -> Unit,
-    searchView: SearchView?
+    dataStore: DataStoreManager?
 ) {
     val lazyPaging = characters.collectAsLazyPagingItems()
     val orientation = LocalConfiguration.current.orientation
@@ -146,7 +148,7 @@ fun Grid(
             content = {
                 items(lazyPaging.itemCount) { index ->
                     lazyPaging[index]?.let { character ->
-                        Item(character, navController, closeSearchList, closeKeyboard, searchView)
+                        Item(character, navController, closeSearchList, dataStore)
                     }
                 }
                 when (lazyPaging.loadState.append) {
@@ -195,8 +197,7 @@ class SearchMenuView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
     var navController: NavController? = null,
-    var hideKeyboard: SearchView.OnQueryTextListener? = null,
-    var clearFocus: SearchView? = null
+    var dataStore: DataStoreManager? = null
 ) : AbstractComposeView(context, attrs, defStyleAttr) {
 
     private val emptyPagedData = PagingData.empty<CharacterDetails>()
@@ -216,8 +217,7 @@ class SearchMenuView @JvmOverloads constructor(
             characters = uiState.value,
             navController = navController,
             closeSearchList = { visibility = GONE },
-            closeKeyboard = { hideKeyboard?.onQueryTextSubmit("I hate keyboard") },
-            searchView = clearFocus
+            dataStore = dataStore
         )
     }
 }
