@@ -50,27 +50,30 @@ class InteropViewModel @Inject constructor(
         dataStore.saveSearchMenuState(isExpanded)
     }
 
+    @OptIn(FlowPreview::class)
     fun observeMenuSearchState(search: SearchMenuView, navController: NavController, searchView: SearchView) {
         viewModelScope.launch {
-            dataStore.readSearchMenuState.distinctUntilChanged().collectLatest { isExpanded ->
+            dataStore.readSearchMenuState.distinctUntilChanged().debounce(100).collectLatest { isExpanded ->
                 when (isExpanded) {
                     true -> {
                         searchView.imeOptions = EditorInfo.IME_FLAG_NO_FULLSCREEN
-                        searchView.isIconified = false
                         Timber.d("search menu expanded")
-                        search.pagedData = pagingFlow
                         search.navController = navController
                         search.visibility = View.VISIBLE
                         search.dataStore = dataStore
+                        search.pagedData = pagingFlow
+                        searchView.isIconified = false
 
                         dataStore.readLastCharacterSearch.distinctUntilChanged().collectLatest { lastCharacter ->
                             if (lastCharacter.isNotEmpty()) {
                                 Timber.d("previously submitted name $lastCharacter")
-                                searchView.setQuery(lastCharacter, false)
+                                searchQuery = lastCharacter
+                                searchView.queryHint = lastCharacter
                             }
                         }
                     }
                     false -> {
+                        searchView.imeOptions = EditorInfo.IME_FLAG_NO_FULLSCREEN
                         Timber.d("search menu collapsed")
                         searchView.onActionViewCollapsed()
                         search.visibility = View.GONE
@@ -85,8 +88,14 @@ class InteropViewModel @Inject constructor(
     private var searchQuery = ""
     private var pagingSource: SearchCharacterPagingSource? = null
 
-    init {
-        pagingSource = getPagingSource()
+    private val pagingFlow: Flow<PagingData<CharacterDetails>> by lazy {
+        Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                prefetchDistance = 40
+            ),
+            pagingSourceFactory = { getPagingSource() }
+        ).flow.cachedIn(viewModelScope)
     }
 
     private fun getPagingSource(): SearchCharacterPagingSource {
@@ -95,15 +104,6 @@ class InteropViewModel @Inject constructor(
         }
         return pagingSource!!
     }
-
-    val pagingFlow: Flow<PagingData<CharacterDetails>> =
-        Pager(
-            config = PagingConfig(
-                pageSize = 20,
-                prefetchDistance = 40
-            ),
-            pagingSourceFactory = { getPagingSource() }
-        ).flow.cachedIn(viewModelScope)
 
     fun updatedSearch(
         query: String

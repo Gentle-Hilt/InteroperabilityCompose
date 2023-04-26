@@ -11,10 +11,6 @@ class SearchCharacterPagingSource @Inject constructor(
     private val repository: NetworkRepository,
     private var userSearch: String
 ) : PagingSource<Int, CharacterDetails>() {
-    fun updateQuery(newQuery: String) {
-        // Update the query parameter when the user searches
-        userSearch = newQuery
-    }
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterDetails> {
         val pageNumber = params.key ?: 1
         val previousKey = if (pageNumber == 1) null else pageNumber - 1

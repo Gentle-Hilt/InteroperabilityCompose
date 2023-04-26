@@ -113,15 +113,11 @@ class InteropActivity : AppCompatActivity() {
     private fun searchListener() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null) {
-                    viewModel.saveLastCharacterSearch(query)
-                }
+                if (!query.isNullOrEmpty()) viewModel.saveLastCharacterSearch(query)
                 return false
             }
             override fun onQueryTextChange(newText: String): Boolean {
-                if (newText.isNotEmpty()) {
-                    viewModel.updatedSearch(newText)
-                }
+                if (newText.isNotEmpty()) viewModel.updatedSearch(newText)
                 return true
             }
         })

@@ -87,6 +87,7 @@ fun Item(
                 coroutineScope.launch {
                     Timber.d("dataStore false")
                     dataStore?.saveSearchMenuState(false)
+                    dataStore?.saveLastCharacterSearch(character.name)
                 }
             }
     ) {
