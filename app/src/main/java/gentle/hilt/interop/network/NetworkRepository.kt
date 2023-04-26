@@ -7,9 +7,9 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import gentle.hilt.interop.R
 import gentle.hilt.interop.network.cache.Cache
-import gentle.hilt.interop.network.models.CharacterDetails
+import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.network.models.CharactersPage
-import gentle.hilt.interop.network.models.EpisodeDetails
+import gentle.hilt.interop.network.models.EpisodeDetailsModel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.callbackFlow
@@ -34,7 +34,7 @@ class NetworkRepository @Inject constructor(
         return request.body
     }
 
-    suspend fun getEpisode(episodeId: Int): EpisodeDetails? {
+    suspend fun getEpisode(episodeId: Int): EpisodeDetailsModel? {
         isLoading.value = true
         val cachedEpisode = Cache.episode[episodeId]
         if (cachedEpisode != null) {
@@ -51,7 +51,7 @@ class NetworkRepository @Inject constructor(
         return request.body
     }
 
-    suspend fun getCharacters(characters: List<String>): List<CharacterDetails>? {
+    suspend fun getCharacters(characters: List<String>): List<CharacterDetailsModel>? {
         isLoading.value = true
         val cachedCharacters = Cache.charactersInEpisode[characters]
         if (cachedCharacters != null) {

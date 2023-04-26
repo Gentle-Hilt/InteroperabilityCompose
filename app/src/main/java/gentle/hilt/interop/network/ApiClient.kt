@@ -1,8 +1,8 @@
 package gentle.hilt.interop.network
 
-import gentle.hilt.interop.network.models.CharacterDetails
+import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.network.models.CharactersPage
-import gentle.hilt.interop.network.models.EpisodeDetails
+import gentle.hilt.interop.network.models.EpisodeDetailsModel
 import gentle.hilt.interop.network.service.ApiService
 import retrofit2.Response
 import javax.inject.Inject
@@ -14,11 +14,11 @@ class ApiClient @Inject constructor(
         return safeApiCall { apiService.fetchCharactersPage(pageIndex) }
     }
 
-    suspend fun getEpisode(episodeId: Int): ResponseState<EpisodeDetails> {
+    suspend fun getEpisode(episodeId: Int): ResponseState<EpisodeDetailsModel> {
         return safeApiCall { apiService.fetchEpisode(episodeId) }
     }
 
-    suspend fun getCharacters(characters: List<String>): ResponseState<List<CharacterDetails>> {
+    suspend fun getCharacters(characters: List<String>): ResponseState<List<CharacterDetailsModel>> {
         return safeApiCall { apiService.fetchMultipleCharacters(characters) }
     }
 

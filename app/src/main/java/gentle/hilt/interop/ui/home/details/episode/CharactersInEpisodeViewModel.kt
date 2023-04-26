@@ -5,8 +5,8 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gentle.hilt.interop.network.NetworkRepository
-import gentle.hilt.interop.network.models.CharacterDetails
-import gentle.hilt.interop.network.models.EpisodeDetails
+import gentle.hilt.interop.network.models.CharacterDetailsModel
+import gentle.hilt.interop.network.models.EpisodeDetailsModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -18,8 +18,8 @@ class CharactersInEpisodeViewModel @Inject constructor(
 ) : ViewModel() {
     val networkObserve = repository.networkStatus.asLiveData(Dispatchers.IO)
 
-    private val episodeState = MutableStateFlow(EpisodeDetails())
-    private val charactersState = MutableStateFlow<List<CharacterDetails>>(emptyList())
+    private val episodeState = MutableStateFlow(EpisodeDetailsModel())
+    private val charactersState = MutableStateFlow<List<CharacterDetailsModel>>(emptyList())
 
     fun fetchEpisodeDetails(episodeId: Int) {
         viewModelScope.launch {

@@ -1,6 +1,6 @@
 package gentle.hilt.interop.network.models
 
-data class EpisodeDetails(
+data class EpisodeDetailsModel(
     val id: Int = 0,
     val name: String = "",
     val airDate: String = "",

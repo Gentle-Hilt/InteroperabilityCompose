@@ -49,7 +49,7 @@ import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.rememberAsyncImagePainter
 import gentle.hilt.interop.data.datastore.DataStoreManager
-import gentle.hilt.interop.network.models.CharacterDetails
+import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
 import gentle.hilt.interop.ui.home.robotoFontFamily
 import kotlinx.coroutines.flow.Flow
@@ -59,7 +59,7 @@ import timber.log.Timber
 
 @Composable
 fun Item(
-    character: CharacterDetails,
+    character: CharacterDetailsModel,
     navController: NavController?,
     closeSearchList: () -> Unit,
     dataStore: DataStoreManager?
@@ -126,7 +126,7 @@ fun Item(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Grid(
-    characters: Flow<PagingData<CharacterDetails>>,
+    characters: Flow<PagingData<CharacterDetailsModel>>,
     navController: NavController?,
     closeSearchList: () -> Unit,
     dataStore: DataStoreManager?
@@ -201,12 +201,12 @@ class SearchMenuView @JvmOverloads constructor(
     var dataStore: DataStoreManager? = null
 ) : AbstractComposeView(context, attrs, defStyleAttr) {
 
-    private val emptyPagedData = PagingData.empty<CharacterDetails>()
-    private val emptyFlowPagedData: Flow<PagingData<CharacterDetails>> = flow {
+    private val emptyPagedData = PagingData.empty<CharacterDetailsModel>()
+    private val emptyFlowPagedData: Flow<PagingData<CharacterDetailsModel>> = flow {
         emit(emptyPagedData)
     }
     private val uiState = mutableStateOf(emptyFlowPagedData)
-    var pagedData: Flow<PagingData<CharacterDetails>>
+    var pagedData: Flow<PagingData<CharacterDetailsModel>>
         get() = uiState.value
         set(value) {
             uiState.value = value

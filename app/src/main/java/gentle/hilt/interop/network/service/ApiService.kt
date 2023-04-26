@@ -1,8 +1,8 @@
 package gentle.hilt.interop.network.service
 
-import gentle.hilt.interop.network.models.CharacterDetails
+import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.network.models.CharactersPage
-import gentle.hilt.interop.network.models.EpisodeDetails
+import gentle.hilt.interop.network.models.EpisodeDetailsModel
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -18,12 +18,12 @@ interface ApiService {
     @GET("episode/{episode-id}")
     suspend fun fetchEpisode(
         @Path("episode-id") episodeId: Int
-    ): Response<EpisodeDetails>
+    ): Response<EpisodeDetailsModel>
 
     @GET("character/{list}")
     suspend fun fetchMultipleCharacters(
         @Path("list") charactersList: List<String>
-    ): Response<List<CharacterDetails>>
+    ): Response<List<CharacterDetailsModel>>
 
     @GET("character")
     suspend fun searchCharacterPage(

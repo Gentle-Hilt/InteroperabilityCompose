@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
-import gentle.hilt.interop.network.models.EpisodeDetails
+import gentle.hilt.interop.network.models.EpisodeDetailsModel
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.white
 import gentle.hilt.interop.ui.home.robotoFontFamily
@@ -118,7 +118,7 @@ class EpisodeInfoView @JvmOverloads constructor(
             episodeState.value = value
         }
 
-    private val episodeState = mutableStateOf(EpisodeDetails())
+    private val episodeState = mutableStateOf(EpisodeDetailsModel())
 
     @Composable
     override fun Content() {

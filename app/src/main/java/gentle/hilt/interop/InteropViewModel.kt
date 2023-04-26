@@ -14,7 +14,7 @@ import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gentle.hilt.interop.data.datastore.DataStoreManager
 import gentle.hilt.interop.network.NetworkRepository
-import gentle.hilt.interop.network.models.CharacterDetails
+import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.network.paging.SearchCharacterPagingSource
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
@@ -88,7 +88,7 @@ class InteropViewModel @Inject constructor(
     private var searchQuery = ""
     private var pagingSource: SearchCharacterPagingSource? = null
 
-    private val pagingFlow: Flow<PagingData<CharacterDetails>> by lazy {
+    private val pagingFlow: Flow<PagingData<CharacterDetailsModel>> by lazy {
         Pager(
             config = PagingConfig(
                 pageSize = 20,
@@ -107,7 +107,7 @@ class InteropViewModel @Inject constructor(
 
     fun updatedSearch(
         query: String
-    ): Flow<PagingData<CharacterDetails>> {
+    ): Flow<PagingData<CharacterDetailsModel>> {
         searchQuery = query
         pagingSource?.invalidate()
         return pagingFlow

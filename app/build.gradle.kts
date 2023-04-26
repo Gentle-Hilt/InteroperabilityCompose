@@ -43,6 +43,10 @@ android {
         compose = true
     }
 
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
+    }
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.4"
     }

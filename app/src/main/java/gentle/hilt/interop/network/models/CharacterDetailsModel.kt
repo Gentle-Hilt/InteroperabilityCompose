@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class CharacterDetails(
+data class CharacterDetailsModel(
     val created: String = "",
     val episode: List<String> = listOf(),
     val gender: String = "",

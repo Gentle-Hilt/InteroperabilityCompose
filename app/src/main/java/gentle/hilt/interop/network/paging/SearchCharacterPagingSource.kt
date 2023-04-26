@@ -4,14 +4,14 @@ import android.net.Uri
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import gentle.hilt.interop.network.NetworkRepository
-import gentle.hilt.interop.network.models.CharacterDetails
+import gentle.hilt.interop.network.models.CharacterDetailsModel
 import javax.inject.Inject
 
 class SearchCharacterPagingSource @Inject constructor(
     private val repository: NetworkRepository,
     private var userSearch: String
-) : PagingSource<Int, CharacterDetails>() {
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterDetails> {
+) : PagingSource<Int, CharacterDetailsModel>() {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterDetailsModel> {
         val pageNumber = params.key ?: 1
         val previousKey = if (pageNumber == 1) null else pageNumber - 1
 
@@ -24,7 +24,7 @@ class SearchCharacterPagingSource @Inject constructor(
             nextKey = getPageIndexFromNext(request.info.next)
         )
     }
-    override fun getRefreshKey(state: PagingState<Int, CharacterDetails>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, CharacterDetailsModel>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)

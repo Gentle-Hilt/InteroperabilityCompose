@@ -1,0 +1,82 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "86d21e740a8896d7a6806b4e8de36d98",
+    "entities": [
+      {
+        "tableName": "character_details",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`characterIsFavorite` INTEGER NOT NULL, `id` INTEGER NOT NULL, `characterImage` TEXT NOT NULL, `characterName` TEXT NOT NULL, `characterStatus` TEXT NOT NULL, `characterGender` TEXT NOT NULL, `characterLocation` TEXT NOT NULL, `characterOrigin` TEXT NOT NULL, `charactersInEpisode` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "characterIsFavorite",
+            "columnName": "characterIsFavorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "characterImage",
+            "columnName": "characterImage",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "characterName",
+            "columnName": "characterName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "characterStatus",
+            "columnName": "characterStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "characterGender",
+            "columnName": "characterGender",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "characterLocation",
+            "columnName": "characterLocation",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "characterOrigin",
+            "columnName": "characterOrigin",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "charactersInEpisode",
+            "columnName": "charactersInEpisode",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '86d21e740a8896d7a6806b4e8de36d98')"
+    ]
+  }
+}

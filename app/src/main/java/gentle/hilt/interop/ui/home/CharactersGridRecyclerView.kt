@@ -49,13 +49,13 @@ import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import coil.compose.rememberAsyncImagePainter
 import gentle.hilt.interop.R
-import gentle.hilt.interop.network.models.CharacterDetails
+import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 @Composable
-fun Item(character: CharacterDetails, navController: NavController) {
+fun Item(character: CharacterDetailsModel, navController: NavController) {
     val action = HomeFragmentDirections.actionNavHomeToCharacterDetailsFragment(character)
     // Managing your item functionality and look at one place
     Card(
@@ -100,7 +100,7 @@ fun Item(character: CharacterDetails, navController: NavController) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Grid(characters: Flow<PagingData<CharacterDetails>>, navController: NavController) {
+fun Grid(characters: Flow<PagingData<CharacterDetailsModel>>, navController: NavController) {
     // read collectAsLazyPagingItems description
     val lazyPaging = characters.collectAsLazyPagingItems()
 
@@ -179,8 +179,8 @@ class CharactersGridRecyclerView @JvmOverloads constructor(
         setViewTreeSavedStateRegistryOwner(findViewTreeSavedStateRegistryOwner())
     }
 
-    private val emptyPagedData = PagingData.empty<CharacterDetails>()
-    private val emptyFlowPagedData: Flow<PagingData<CharacterDetails>> = flow {
+    private val emptyPagedData = PagingData.empty<CharacterDetailsModel>()
+    private val emptyFlowPagedData: Flow<PagingData<CharacterDetailsModel>> = flow {
         emit(emptyPagedData)
     }
 
@@ -188,7 +188,7 @@ class CharactersGridRecyclerView @JvmOverloads constructor(
     private val uiState = mutableStateOf(emptyFlowPagedData)
 
     // pagedData to get and set to update the UI
-    var pagedData: Flow<PagingData<CharacterDetails>>
+    var pagedData: Flow<PagingData<CharacterDetailsModel>>
         get() = uiState.value
         set(value) {
             uiState.value = value

@@ -1,5 +1,6 @@
 package gentle.hilt.interop.ui.home.details
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -36,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,13 +59,17 @@ import androidx.navigation.fragment.navArgs
 import coil.compose.rememberAsyncImagePainter
 import dagger.hilt.android.AndroidEntryPoint
 import gentle.hilt.interop.R
+import gentle.hilt.interop.data.room.entities.CharacterDetailsEntity
+import gentle.hilt.interop.data.room.mappers.toEntity
 import gentle.hilt.interop.databinding.FragmentCharacterDetailsBinding
 import gentle.hilt.interop.network.NetworkStatus
-import gentle.hilt.interop.network.models.CharacterDetails
+import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.fade_white
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.white
 import gentle.hilt.interop.ui.home.robotoFontFamily
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -72,10 +78,12 @@ class CharacterDetailsFragment : Fragment() {
     private val viewModel: CharacterDetailsViewModel by viewModels()
 
     private val args: CharacterDetailsFragmentArgs by navArgs()
-    private lateinit var character: CharacterDetails
+    private lateinit var character: CharacterDetailsModel
+    private lateinit var mappedCharacter: CharacterDetailsEntity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         character = args.character
+        mappedCharacter = character.toEntity()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -100,6 +108,7 @@ class CharacterDetailsFragment : Fragment() {
                 NetworkStatus.Available -> {
                     binding.chImage.setContent { CharacterImage() }
                 }
+
                 NetworkStatus.Unavailable -> Unit
             }
         }
@@ -122,9 +131,11 @@ class CharacterDetailsFragment : Fragment() {
         }
     }
 
+    @SuppressLint("CoroutineCreationDuringComposition")
     @Composable
     fun FavoriteCharacterButton() {
         var liked by remember { mutableStateOf(false) }
+        val coroutineScope = rememberCoroutineScope()
         val orientation = LocalConfiguration.current.orientation
         val portrait: Boolean = orientation == Configuration.ORIENTATION_PORTRAIT
         val paddingModifier = if (portrait) Modifier.padding(bottom = 45.dp, end = 50.dp) else Modifier
@@ -136,9 +147,27 @@ class CharacterDetailsFragment : Fragment() {
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.size(60.dp)
             ) {
+                // TODO add state to observe when button is pressed and save it to room
+                coroutineScope.launch {
+                    viewModel.characterRepo.observeCharacters().collect { listCharacters ->
+                        listCharacters.map { character ->
+                            liked = when (character.characterIsFavorite) {
+                                true -> true
+                                false -> false
+                            }
+                        }
+                    }
+                }
+
                 when (liked) {
-                    true -> PulsatingIcon(Icons.Default.Favorite, Color.Red)
-                    false -> PulsatingIcon(Icons.Default.Favorite, Color.Black)
+                    true -> {
+                        viewModel.deleteCharacterFromFavorite(mappedCharacter)
+                        PulsatingIcon(Icons.Default.Favorite, Color.Red)
+                    }
+                    false -> {
+                        viewModel.addCharacterAsFavorite(mappedCharacter)
+                        PulsatingIcon(Icons.Default.Favorite, Color.Black)
+                    }
                 }
             }
         }
@@ -297,6 +326,7 @@ class CharacterDetailsFragment : Fragment() {
     private fun String.capitalize(): String {
         return replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

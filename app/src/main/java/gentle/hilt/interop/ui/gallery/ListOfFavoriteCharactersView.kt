@@ -1,4 +1,4 @@
-package gentle.hilt.interop.ui.home.details.episode
+package gentle.hilt.interop.ui.gallery
 
 import android.content.Context
 import android.content.res.Configuration
@@ -25,7 +25,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,17 +38,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import coil.compose.rememberAsyncImagePainter
-import gentle.hilt.interop.network.models.CharacterDetailsModel
-import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
+import gentle.hilt.interop.data.room.entities.CharacterDetailsEntity
+import gentle.hilt.interop.ui.home.CharactersGridRecyclerView
 import gentle.hilt.interop.ui.home.robotoFontFamily
 
 @Composable
-fun CharacterInEpisode(character: CharacterDetailsModel, navController: NavController) {
-    val action = CharactersInEpisodeFragmentDirections.actionCharactersInEpisodeFragmentToCharacterDetailsFragment(character)
+fun FavoriteCharacter(character: CharacterDetailsEntity, navController: NavController?) {
+    // TODO make it into small box with info instead of picture with image
     Card(
         shape = RoundedCornerShape(8.dp),
         backgroundColor = Color.DarkGray,
@@ -56,7 +55,7 @@ fun CharacterInEpisode(character: CharacterDetailsModel, navController: NavContr
             .height(200.dp)
             .width(150.dp)
             .padding(8.dp)
-            .clickable { navController.navigate(action) }
+            .clickable { }
     ) {
         Box(
             modifier = Modifier
@@ -64,7 +63,7 @@ fun CharacterInEpisode(character: CharacterDetailsModel, navController: NavContr
                 .clip(RoundedCornerShape(10))
         ) {
             Image(
-                painter = rememberAsyncImagePainter(character.image),
+                painter = rememberAsyncImagePainter(character.characterImage),
                 contentDescription = null,
                 modifier = Modifier
                     .clip(RoundedCornerShape(10))
@@ -75,10 +74,10 @@ fun CharacterInEpisode(character: CharacterDetailsModel, navController: NavContr
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .background(Color(gray), RoundedCornerShape(10))
+                    .background(Color(CharactersGridRecyclerView.gray), RoundedCornerShape(10))
             ) {
                 Text(
-                    text = character.name,
+                    text = character.characterName,
                     color = Color.White,
                     fontSize = 20.sp,
                     fontFamily = robotoFontFamily,
@@ -94,7 +93,8 @@ fun CharacterInEpisode(character: CharacterDetailsModel, navController: NavContr
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CharactersInEpisodeList(characters: List<CharacterDetailsModel>, navController: NavController) {
+fun VerticalListOfFavoriteCharacters(characters: List<CharacterDetailsEntity>, navController: NavController?) {
+    // TODO make list instead of grid
     val orientation = LocalConfiguration.current.orientation
     val numColumns = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
         2
@@ -114,32 +114,32 @@ fun CharactersInEpisodeList(characters: List<CharacterDetailsModel>, navControll
             flingBehavior = rememberSnapFlingBehavior(rememberLazyListState())
         ) {
             items(characters.size) { index ->
-                CharacterInEpisode(characters[index], navController)
+                FavoriteCharacter(characters[index], navController)
             }
         }
     }
 }
-class CharactersInEpisodeView @JvmOverloads constructor(
+class ListOfFavoriteCharactersView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
+    val navController: NavController? = null
 ) : AbstractComposeView(context, attrs, defStyleAttr) {
-    // You don't wanna render problems, do you?
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         setViewTreeSavedStateRegistryOwner(findViewTreeSavedStateRegistryOwner())
     }
 
-    var characters: List<CharacterDetailsModel>
-        get() = charactersState
+    var favorite
+        get() = favoriteListState.value
         set(value) {
-            charactersState.clear()
-            charactersState.addAll(value)
+            favoriteListState.value = value
         }
-    private val charactersState = mutableStateListOf<CharacterDetailsModel>()
+
+    private val favoriteListState = mutableStateOf<List<CharacterDetailsEntity>>(emptyList())
 
     @Composable
     override fun Content() {
-        CharactersInEpisodeList(charactersState, findNavController())
+        VerticalListOfFavoriteCharacters(favorite, navController)
     }
 }
