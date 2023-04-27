@@ -42,12 +42,14 @@ import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import coil.compose.rememberAsyncImagePainter
 import gentle.hilt.interop.data.room.entities.CharacterDetailsEntity
+import gentle.hilt.interop.data.room.mappers.toModel
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView
 import gentle.hilt.interop.ui.home.robotoFontFamily
 
 @Composable
 fun FavoriteCharacter(character: CharacterDetailsEntity, navController: NavController?) {
     // TODO make it into small box with info instead of picture with image
+    val action = FavoritesFragmentDirections.actionNavGalleryToCharacterDetailsFragment(character.toModel())
     Card(
         shape = RoundedCornerShape(8.dp),
         backgroundColor = Color.DarkGray,
@@ -55,7 +57,7 @@ fun FavoriteCharacter(character: CharacterDetailsEntity, navController: NavContr
             .height(200.dp)
             .width(150.dp)
             .padding(8.dp)
-            .clickable { }
+            .clickable { navController?.navigate(action) }
     ) {
         Box(
             modifier = Modifier
@@ -119,11 +121,12 @@ fun VerticalListOfFavoriteCharacters(characters: List<CharacterDetailsEntity>, n
         }
     }
 }
+
 class ListOfFavoriteCharactersView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-    val navController: NavController? = null
+    var navController: NavController? = null
 ) : AbstractComposeView(context, attrs, defStyleAttr) {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()

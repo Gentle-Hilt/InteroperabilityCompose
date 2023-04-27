@@ -15,3 +15,16 @@ fun CharacterDetailsModel.toEntity(): CharacterDetailsEntity {
         charactersInEpisode = this.episode
     )
 }
+
+fun CharacterDetailsEntity.toModel(): CharacterDetailsModel {
+    return CharacterDetailsModel(
+        id = this.id,
+        image = this.characterImage,
+        name = this.characterName,
+        status = this.characterStatus,
+        gender = this.characterGender,
+        location = CharacterDetailsModel.Location(this.characterLocation),
+        origin = CharacterDetailsModel.Origin(this.characterOrigin),
+        episode = this.charactersInEpisode
+    )
+}

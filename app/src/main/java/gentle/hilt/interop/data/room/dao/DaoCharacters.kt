@@ -16,6 +16,9 @@ interface DaoCharacters {
     @Delete
     suspend fun deleteCharacter(character: CharacterDetailsEntity)
 
+    @Query("SELECT EXISTS(SELECT 1 FROM character_details WHERE id = :characterId)")
+    fun isCharacterFavorite(characterId: Int): Flow<Boolean>
+
     @Query("SELECT * FROM character_details")
     fun observeAllCharacters(): Flow<List<CharacterDetailsEntity>>
 }

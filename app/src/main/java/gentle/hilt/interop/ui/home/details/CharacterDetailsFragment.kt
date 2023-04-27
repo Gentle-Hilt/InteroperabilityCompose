@@ -34,10 +34,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -68,8 +66,6 @@ import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.fade_whi
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.white
 import gentle.hilt.interop.ui.home.robotoFontFamily
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -134,41 +130,28 @@ class CharacterDetailsFragment : Fragment() {
     @SuppressLint("CoroutineCreationDuringComposition")
     @Composable
     fun FavoriteCharacterButton() {
-        var liked by remember { mutableStateOf(false) }
-        val coroutineScope = rememberCoroutineScope()
+        val isFavorite = viewModel.isCharacterFavorite(mappedCharacter).collectAsState(initial = false)
         val orientation = LocalConfiguration.current.orientation
         val portrait: Boolean = orientation == Configuration.ORIENTATION_PORTRAIT
         val paddingModifier = if (portrait) Modifier.padding(bottom = 45.dp, end = 50.dp) else Modifier
         IconButton(
             modifier = Modifier.then(paddingModifier),
-            onClick = { liked = !liked }
+            onClick = {
+                if (isFavorite.value) {
+                    viewModel.deleteCharacterFromFavorite(mappedCharacter)
+                } else {
+                    viewModel.addCharacterAsFavorite(mappedCharacter)
+                }
+            }
         ) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.size(60.dp)
             ) {
-                // TODO add state to observe when button is pressed and save it to room
-                coroutineScope.launch {
-                    viewModel.characterRepo.observeCharacters().collect { listCharacters ->
-                        listCharacters.map { character ->
-                            liked = when (character.characterIsFavorite) {
-                                true -> true
-                                false -> false
-                            }
-                        }
-                    }
-                }
-
-                when (liked) {
-                    true -> {
-                        viewModel.deleteCharacterFromFavorite(mappedCharacter)
-                        PulsatingIcon(Icons.Default.Favorite, Color.Red)
-                    }
-                    false -> {
-                        viewModel.addCharacterAsFavorite(mappedCharacter)
-                        PulsatingIcon(Icons.Default.Favorite, Color.Black)
-                    }
-                }
+                PulsatingIcon(
+                    icon = Icons.Default.Favorite,
+                    color = if (isFavorite.value) Color.Red else Color.Black
+                )
             }
         }
     }

@@ -16,5 +16,9 @@ class CharacterDetailsRepository @Inject constructor(
         dao.deleteCharacter(character)
     }
 
+    fun isCharacterFavorite(character: CharacterDetailsEntity): Flow<Boolean> {
+        return dao.isCharacterFavorite(character.id)
+    }
+
     fun observeCharacters(): Flow<List<CharacterDetailsEntity>> = dao.observeAllCharacters()
 }

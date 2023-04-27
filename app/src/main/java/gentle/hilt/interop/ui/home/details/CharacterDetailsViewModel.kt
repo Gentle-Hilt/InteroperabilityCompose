@@ -8,14 +8,14 @@ import gentle.hilt.interop.data.room.entities.CharacterDetailsEntity
 import gentle.hilt.interop.data.room.repository.CharacterDetailsRepository
 import gentle.hilt.interop.network.NetworkRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CharacterDetailsViewModel @Inject constructor(
-    private val networkRepo: NetworkRepository,
-    val characterRepo: CharacterDetailsRepository
+    networkRepo: NetworkRepository,
+    private val characterRepo: CharacterDetailsRepository
 ) : ViewModel() {
     val networkState = networkRepo.networkStatus.asLiveData(Dispatchers.IO)
 
@@ -29,13 +29,7 @@ class CharacterDetailsViewModel @Inject constructor(
             characterRepo.deleteCharacter(character)
         }
     }
-
-    fun observeFavorites(character: CharacterDetailsEntity) {
-        viewModelScope.launch {
-            characterRepo.observeCharacters().collect { listCharacters ->
-                listCharacters.map { character ->
-                }
-            }
-        }
+    fun isCharacterFavorite(character: CharacterDetailsEntity): Flow<Boolean> {
+        return characterRepo.isCharacterFavorite(character)
     }
 }

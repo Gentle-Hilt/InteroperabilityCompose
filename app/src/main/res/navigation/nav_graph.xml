@@ -25,15 +25,18 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="gentle.hilt.interop.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="gentle.hilt.interop.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:name="gentle.hilt.interop.ui.gallery.FavoritesFragment"
+        android:label="@string/menu_favorites"
+        tools:layout="@layout/fragment_gallery" >
+        <action
+            android:id="@+id/action_nav_gallery_to_characterDetailsFragment"
+            app:destination="@id/characterDetailsFragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popExitAnim="@anim/slide_to_right"
+            app:popEnterAnim="@anim/slide_from_left"
+            />
+    </fragment>
     <fragment
         android:id="@+id/characterDetailsFragment"
         android:label="@string/character_details"
