@@ -50,8 +50,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.rememberAsyncImagePainter
 import gentle.hilt.interop.data.datastore.DataStoreManager
 import gentle.hilt.interop.network.models.CharacterDetailsModel
+import gentle.hilt.interop.theme.robotoFontFamily
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
-import gentle.hilt.interop.ui.home.robotoFontFamily
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch

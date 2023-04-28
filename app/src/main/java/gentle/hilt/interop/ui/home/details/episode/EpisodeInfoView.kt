@@ -28,9 +28,9 @@ import androidx.compose.ui.unit.sp
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import gentle.hilt.interop.network.models.EpisodeDetailsModel
+import gentle.hilt.interop.theme.robotoFontFamily
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.white
-import gentle.hilt.interop.ui.home.robotoFontFamily
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.Date

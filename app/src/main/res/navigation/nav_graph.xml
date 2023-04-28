@@ -78,6 +78,10 @@
             />
 
     </fragment>
-
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="gentle.hilt.interop.ui.settings.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings" />
 
 </navigation>

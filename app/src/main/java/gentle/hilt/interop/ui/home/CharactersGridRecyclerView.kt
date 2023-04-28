@@ -50,6 +50,7 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import coil.compose.rememberAsyncImagePainter
 import gentle.hilt.interop.R
 import gentle.hilt.interop.network.models.CharacterDetailsModel
+import gentle.hilt.interop.theme.robotoFontFamily
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

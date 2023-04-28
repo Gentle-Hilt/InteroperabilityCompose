@@ -30,6 +30,8 @@ class InteropViewModel @Inject constructor(
     private val repository: NetworkRepository,
     private val dataStore: DataStoreManager
 ) : ViewModel() {
+    val network = repository.networkStatus
+
     @OptIn(FlowPreview::class)
     fun loadingState(loading: ComposeView) {
         viewModelScope.launch {
@@ -56,12 +58,12 @@ class InteropViewModel @Inject constructor(
             dataStore.readSearchMenuState.distinctUntilChanged().debounce(100).collectLatest { isExpanded ->
                 when (isExpanded) {
                     true -> {
-                        searchView.imeOptions = EditorInfo.IME_FLAG_NO_FULLSCREEN
                         Timber.d("search menu expanded")
-                        search.navController = navController
                         search.visibility = View.VISIBLE
+                        search.navController = navController
                         search.dataStore = dataStore
                         search.pagedData = pagingFlow
+                        searchView.imeOptions = EditorInfo.IME_FLAG_NO_FULLSCREEN
                         searchView.isIconified = false
 
                         dataStore.readLastCharacterSearch.distinctUntilChanged().collectLatest { lastCharacter ->
@@ -73,9 +75,10 @@ class InteropViewModel @Inject constructor(
                         }
                     }
                     false -> {
-                        searchView.imeOptions = EditorInfo.IME_FLAG_NO_FULLSCREEN
                         Timber.d("search menu collapsed")
-                        searchView.onActionViewCollapsed()
+                        searchView.setQuery("", false)
+                        searchView.imeOptions = EditorInfo.IME_FLAG_NO_FULLSCREEN
+                        searchView.isIconified = true
                         search.visibility = View.GONE
                     }
                 }

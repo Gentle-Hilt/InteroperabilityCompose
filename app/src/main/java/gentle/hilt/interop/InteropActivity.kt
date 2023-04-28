@@ -48,7 +48,8 @@ class InteropActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home,
-                R.id.nav_gallery
+                R.id.nav_gallery,
+                R.id.nav_settings
             ),
             binding.drawerLayout
         )
@@ -105,6 +106,8 @@ class InteropActivity : AppCompatActivity() {
     private fun settingsListener() {
         settingsMenu.setOnMenuItemClickListener {
             searchView.clearFocus()
+            navController.popBackStack()
+            navController.navigate(R.id.nav_settings)
             true
         }
     }

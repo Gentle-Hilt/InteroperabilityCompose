@@ -43,8 +43,8 @@ import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import coil.compose.rememberAsyncImagePainter
 import gentle.hilt.interop.network.models.CharacterDetailsModel
+import gentle.hilt.interop.theme.robotoFontFamily
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
-import gentle.hilt.interop.ui.home.robotoFontFamily
 
 @Composable
 fun CharacterInEpisode(character: CharacterDetailsModel, navController: NavController) {

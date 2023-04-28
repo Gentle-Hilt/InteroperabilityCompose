@@ -43,12 +43,11 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import coil.compose.rememberAsyncImagePainter
 import gentle.hilt.interop.data.room.entities.CharacterDetailsEntity
 import gentle.hilt.interop.data.room.mappers.toModel
+import gentle.hilt.interop.theme.robotoFontFamily
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView
-import gentle.hilt.interop.ui.home.robotoFontFamily
 
 @Composable
 fun FavoriteCharacter(character: CharacterDetailsEntity, navController: NavController?) {
-    // TODO make it into small box with info instead of picture with image
     val action = FavoritesFragmentDirections.actionNavGalleryToCharacterDetailsFragment(character.toModel())
     Card(
         shape = RoundedCornerShape(8.dp),
@@ -96,7 +95,6 @@ fun FavoriteCharacter(character: CharacterDetailsEntity, navController: NavContr
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun VerticalListOfFavoriteCharacters(characters: List<CharacterDetailsEntity>, navController: NavController?) {
-    // TODO make list instead of grid
     val orientation = LocalConfiguration.current.orientation
     val numColumns = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
         2

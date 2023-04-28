@@ -36,7 +36,6 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -62,10 +61,10 @@ import gentle.hilt.interop.data.room.mappers.toEntity
 import gentle.hilt.interop.databinding.FragmentCharacterDetailsBinding
 import gentle.hilt.interop.network.NetworkStatus
 import gentle.hilt.interop.network.models.CharacterDetailsModel
+import gentle.hilt.interop.theme.robotoFontFamily
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.fade_white
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.white
-import gentle.hilt.interop.ui.home.robotoFontFamily
 import java.util.Locale
 
 @AndroidEntryPoint
