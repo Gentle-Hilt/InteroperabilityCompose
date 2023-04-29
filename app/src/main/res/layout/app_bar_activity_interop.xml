@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InteropActivity">
+    tools:context=".ui.interop.InteropActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/app_bar_cl"
@@ -41,7 +41,7 @@
             app:navGraph="@navigation/nav_graph" />
 
 
-        <gentle.hilt.interop.SearchMenuView
+        <gentle.hilt.interop.ui.interop.SearchMenuView
             android:id="@+id/searchCharacter"
             android:layout_width="0dp"
             android:layout_height="0dp"

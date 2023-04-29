@@ -27,6 +27,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -50,8 +51,8 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import coil.compose.rememberAsyncImagePainter
 import gentle.hilt.interop.R
 import gentle.hilt.interop.network.models.CharacterDetailsModel
-import gentle.hilt.interop.theme.robotoFontFamily
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
+import gentle.hilt.interop.ui.robotoFontFamily
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -198,7 +199,9 @@ class CharactersGridRecyclerView @JvmOverloads constructor(
     @Composable
     override fun Content() {
         //  Content now uses Grid composable to display the pagedData
-        Grid(characters = uiState.value, findNavController())
+        MaterialTheme {
+            Grid(characters = uiState.value, findNavController())
+        }
     }
     companion object {
         const val gray: Long = 0xFF3c3e44

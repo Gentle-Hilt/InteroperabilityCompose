@@ -54,7 +54,7 @@ class DataStoreManager @Inject constructor(
     val darkModeEnabled: Flow<Boolean> = runBlocking {
         withContext(Dispatchers.Default) {
             dataStore.data.map { preferences ->
-                preferences[DARK_MODE] ?: false
+                preferences[DARK_MODE] ?: true
             }
         }
     }

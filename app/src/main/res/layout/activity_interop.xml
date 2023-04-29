@@ -24,7 +24,7 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_interop"
         app:menu="@menu/drawer_home"
-        android:background="@color/drawer_background"
+        android:background="@color/white"
         app:itemBackground="@drawable/drawer_buttons_states"
 
         />

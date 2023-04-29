@@ -30,6 +30,7 @@ ktlint = "11.3.1"
 detekt = "1.23.0-RC1"
 legacy-support-v4 = "1.0.0"
 custom-view = "1.1.0"
+splash-screen = "1.0.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -75,6 +76,7 @@ compose_coil = {group = "io.coil-kt", name = "coil-compose", version.ref = "coil
 compose_paging = { group = "androidx.paging", name = "paging-compose", version.ref = "compose_paging" }
 legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacy-support-v4" }
 custom-view = {group = "androidx.customview", name = "customview", version.ref = "custom-view" }
+splash-screen = {group = "androidx.core", name = "core-splashscreen", version.ref = "splash-screen"}
 
 
 [plugins]

@@ -21,13 +21,12 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -53,7 +52,7 @@ android {
 }
 
 dependencies {
-// Core
+    // Core
     implementation(libs.core.ktx)
     implementation(libs.core.activity)
     implementation(libs.appcompat)
@@ -66,8 +65,8 @@ dependencies {
     implementation(libs.navigation.ui)
     // Convenience
     implementation(libs.hilt)
-    implementation(libs.legacy.support.v4) // https://issuetracker.google.com/issues/179057202 still waiting
-    kapt(libs.hilt.compiler)
+    implementation(libs.legacy.support.v4)
+    kapt(libs.hilt.compiler) // https://issuetracker.google.com/issues/179057202 still waiting
     implementation(libs.timber)
     implementation(libs.logger)
     // Internet
@@ -98,9 +97,6 @@ dependencies {
     implementation(libs.compose.runtime.livedata)
     implementation(libs.compose.coil)
     implementation(libs.compose.paging)
-
-    // Render problem
-    debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.compose.ui.preview)
-    debugImplementation(libs.custom.view)
+    // Other
+    implementation(libs.splash.screen)
 }

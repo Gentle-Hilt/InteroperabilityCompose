@@ -16,8 +16,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Switch
 import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
@@ -29,61 +27,51 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import gentle.hilt.interop.data.datastore.DataStoreManager
-import gentle.hilt.interop.theme.robotoFontFamily
+import gentle.hilt.interop.ui.robotoFontFamily
+import gentle.hilt.interop.ui.settings.theme.SettingsTheme
 import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsScreen() {
     val dataStore = DataStoreManager(context = LocalContext.current)
-    MaterialTheme(
-        colors = if (dataStore.darkModeEnabled.collectAsState(initial = false).value) {
-            darkColors(
-                primary = Color.Black,
-                background = Color.Black
-            )
-        } else {
-            lightColors(
-                primary = Color.Gray,
-                background = Color.Black
-            )
-        }
+    val isDarkModeSet = dataStore.darkModeEnabled.collectAsState(initial = false)
+    val coroutineScope = rememberCoroutineScope()
+    Box(
+        modifier = Modifier
+            .background(Color.White)
+            .fillMaxSize()
+            .padding(5.dp)
     ) {
-        val primary = MaterialTheme.colors.primary
-        val background = MaterialTheme.colors.background
-        val isDarkModeSet = dataStore.darkModeEnabled.collectAsState(initial = false)
-        val coroutineScope = rememberCoroutineScope()
         Box(
             modifier = Modifier
-                .background(Color.White)
-                .fillMaxSize()
-                .padding(5.dp)
+                .fillMaxWidth()
+                .border(3.dp, MaterialTheme.colors.onBackground, RoundedCornerShape(3.dp))
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .border(3.dp, background, RoundedCornerShape(3.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(16.dp)
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    Text(text = "Dark Mode", fontSize = 35.sp, fontFamily = robotoFontFamily, color = primary)
-                    Spacer(Modifier.width(16.dp))
-                }
-                Switch(
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = primary,
-                        uncheckedThumbColor = primary
-                    ),
-                    checked = isDarkModeSet.value,
-                    onCheckedChange = { isChecked ->
-                        coroutineScope.launch {
-                            dataStore.setDarkMode(isChecked)
-                        }
-                    },
-                    modifier = Modifier.align(Alignment.TopEnd).padding(16.dp)
+                Text(
+                    text = "Dark Mode",
+                    fontSize = 35.sp,
+                    fontFamily = robotoFontFamily,
+                    color = MaterialTheme.colors.onBackground
                 )
+                Spacer(Modifier.width(16.dp))
             }
+            Switch(
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = MaterialTheme.colors.secondary,
+                    uncheckedThumbColor = MaterialTheme.colors.onSurface
+                ),
+                checked = isDarkModeSet.value,
+                onCheckedChange = { isChecked ->
+                    coroutineScope.launch {
+                        dataStore.setDarkMode(isChecked)
+                    }
+                },
+                modifier = Modifier.align(Alignment.TopEnd).padding(16.dp)
+            )
         }
     }
 }
@@ -96,6 +84,8 @@ class SettingsScreenView @JvmOverloads constructor(
 
     @Composable
     override fun Content() {
-        SettingsScreen()
+        SettingsTheme {
+            SettingsScreen()
+        }
     }
 }

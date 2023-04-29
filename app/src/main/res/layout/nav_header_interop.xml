@@ -55,7 +55,7 @@
         android:textSize="12sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header_text"
         android:layout_width="match_parent"
 
@@ -66,11 +66,24 @@
             android:id="@+id/made_with"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             android:textSize="12sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:text="@string/made_with_free" />
 
-        <TextView
+
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/api_link_compose"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/made_with"
+            app:layout_constraintTop_toTopOf="@+id/made_with" />
+
+       <!-- <TextView
             android:id="@+id/api_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,7 +91,7 @@
             android:layout_marginStart="5dp"
             android:textSize="17sp"
             android:textColor="@color/link_color"
-            android:textStyle="bold"/>
+            android:textStyle="bold"/>-->
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

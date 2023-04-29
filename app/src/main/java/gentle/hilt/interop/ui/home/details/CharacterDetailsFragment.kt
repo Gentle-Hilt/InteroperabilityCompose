@@ -61,10 +61,10 @@ import gentle.hilt.interop.data.room.mappers.toEntity
 import gentle.hilt.interop.databinding.FragmentCharacterDetailsBinding
 import gentle.hilt.interop.network.NetworkStatus
 import gentle.hilt.interop.network.models.CharacterDetailsModel
-import gentle.hilt.interop.theme.robotoFontFamily
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.fade_white
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.white
+import gentle.hilt.interop.ui.robotoFontFamily
 import java.util.Locale
 
 @AndroidEntryPoint

@@ -11,7 +11,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -43,15 +42,13 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import coil.compose.rememberAsyncImagePainter
 import gentle.hilt.interop.data.room.entities.CharacterDetailsEntity
 import gentle.hilt.interop.data.room.mappers.toModel
-import gentle.hilt.interop.theme.robotoFontFamily
-import gentle.hilt.interop.ui.home.CharactersGridRecyclerView
+import gentle.hilt.interop.ui.robotoFontFamily
 
 @Composable
 fun FavoriteCharacter(character: CharacterDetailsEntity, navController: NavController?) {
     val action = FavoritesFragmentDirections.actionNavGalleryToCharacterDetailsFragment(character.toModel())
     Card(
-        shape = RoundedCornerShape(8.dp),
-        backgroundColor = Color.DarkGray,
+        shape = RoundedCornerShape(10),
         modifier = Modifier
             .height(200.dp)
             .width(150.dp)
@@ -66,16 +63,14 @@ fun FavoriteCharacter(character: CharacterDetailsEntity, navController: NavContr
             Image(
                 painter = rememberAsyncImagePainter(character.characterImage),
                 contentDescription = null,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10))
-                    .fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
 
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .background(Color(CharactersGridRecyclerView.gray), RoundedCornerShape(10))
+                    .background(Color.DarkGray, RoundedCornerShape(10))
             ) {
                 Text(
                     text = character.characterName,
@@ -86,7 +81,6 @@ fun FavoriteCharacter(character: CharacterDetailsEntity, navController: NavContr
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
-                Spacer(Modifier.height(3.dp))
             }
         }
     }

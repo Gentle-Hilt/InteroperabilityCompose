@@ -67,3 +67,10 @@
 -keepclasseswithmembers class * {
     @com.squareup.moshi.* <methods>;
 }
+
+# Please add these rules to your existing keep rules in order to suppress warnings.
+# This is generated automatically by the Android Gradle plugin.
+
+-dontwarn com.google.devtools.ksp.processing.SymbolProcessorProvider
+-dontwarn javax.lang.model.element.Element
+-dontwarn javax.lang.model.element.Modifier
