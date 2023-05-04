@@ -11,24 +11,38 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -38,6 +52,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import gentle.hilt.interop.R
 import gentle.hilt.interop.databinding.ActivityInteropBinding
 import gentle.hilt.interop.databinding.NavHeaderInteropBinding
+import gentle.hilt.interop.ui.robotoFontFamily
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class InteropActivity : AppCompatActivity() {
@@ -71,6 +88,7 @@ class InteropActivity : AppCompatActivity() {
         backFromNavigationDrawerImplementation()
         redirectToApiWebsiteDialog()
         loadingBar(binding.appBarMain.pbLoading)
+        launchAppFirstTimeDialog()
     }
 
     private fun backFromNavigationDrawerImplementation() {
@@ -112,8 +130,10 @@ class InteropActivity : AppCompatActivity() {
     private fun settingsListener() {
         settingsMenu.setOnMenuItemClickListener {
             searchView.clearFocus()
-            navController.popBackStack()
-            navController.navigate(R.id.nav_settings)
+            val navOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.nav_home, true)
+                .build()
+            navController.navigate(R.id.nav_settings, null, navOptions)
             true
         }
     }
@@ -193,5 +213,73 @@ class InteropActivity : AppCompatActivity() {
                 }
             )
         }
+    }
+
+    private fun launchAppFirstTimeDialog() {
+        binding.appBarMain.firstTimeDialog.setContent {
+            val showDialog = remember { mutableStateOf(true) }
+            lifecycleScope.launch {
+                val firstTime = viewModel.dataStore.readFirstTimeDialog.first()
+                if (firstTime) {
+                    showDialog.value = true
+                    viewModel.dataStore.saveFirstTimeDialog(false)
+                } else {
+                    binding.appBarMain.firstTimeDialog.visibility = View.GONE
+                    showDialog.value = false
+                }
+            }
+            if (showDialog.value) {
+                FirstTimeDialog(showDialog)
+            }
+        }
+    }
+}
+
+@Composable
+fun FirstTimeDialog(showDialog: MutableState<Boolean>) {
+    if (showDialog.value) {
+        Dialog(
+            onDismissRequest = { showDialog.value = false },
+            content = {
+                Box(
+                    Modifier
+                        .background(Color.DarkGray, RoundedCornerShape(10))
+                        .padding(12.dp)
+                ) {
+                    Column(
+                        modifier = Modifier,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            "This app was made to learn about Api " +
+                                "calls, Pagination, Local and Network Caching, Handling Connectivity and" +
+                                " Reconnection issues and properly display it to the user.\nAs the name says it's an interop: compose inside xml fragments." +
+                                "\nI released it for developers to see performance with Compose.\nOverall it's my second app " +
+                                "and first where i used compose, also i tested everything that is related to network.",
+                            fontWeight = FontWeight.Light,
+                            fontSize = 18.sp,
+                            textAlign = TextAlign.Start,
+                            fontFamily = robotoFontFamily,
+                            color = Color.White
+                        )
+                        Button(
+                            colors = ButtonDefaults.buttonColors(Color.Gray),
+                            onClick = { showDialog.value = false },
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .padding(top = 10.dp)
+                        ) {
+                            Text(
+                                text = "OK",
+                                color = Color.White,
+                                fontFamily = robotoFontFamily
+
+                            )
+                        }
+                    }
+                }
+            }
+        )
     }
 }

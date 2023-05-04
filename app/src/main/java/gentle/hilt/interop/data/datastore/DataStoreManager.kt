@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import gentle.hilt.interop.data.datastore.DataStoreManager.PreferencesKeys.DARK_MODE
+import gentle.hilt.interop.data.datastore.DataStoreManager.PreferencesKeys.FIRST_TIME_DIALOG
 import gentle.hilt.interop.data.datastore.DataStoreManager.PreferencesKeys.LAST_CHARACTER_SEARCH
 import gentle.hilt.interop.data.datastore.DataStoreManager.PreferencesKeys.SEARCH_MENU_EXPANDED
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +27,7 @@ class DataStoreManager @Inject constructor(
         val LAST_CHARACTER_SEARCH = stringPreferencesKey("LAST_CHARACTER_SEARCH")
         val SEARCH_MENU_EXPANDED = booleanPreferencesKey("SEARCH_MENU_EXPANDED")
         val DARK_MODE = booleanPreferencesKey("DARK_MODE")
+        val FIRST_TIME_DIALOG = booleanPreferencesKey("FIRST_TIME_DIALOG")
     }
     suspend fun saveLastCharacterSearch(lastChSearch: String) = dataStore.edit { preferences ->
         preferences[LAST_CHARACTER_SEARCH] = lastChSearch
@@ -57,5 +59,12 @@ class DataStoreManager @Inject constructor(
                 preferences[DARK_MODE] ?: true
             }
         }
+    }
+    suspend fun saveFirstTimeDialog(firstTime: Boolean) = dataStore.edit { preferences ->
+        preferences[FIRST_TIME_DIALOG] = firstTime
+    }
+
+    val readFirstTimeDialog: Flow<Boolean> = dataStore.data.map { preferences ->
+        preferences[FIRST_TIME_DIALOG] ?: true
     }
 }

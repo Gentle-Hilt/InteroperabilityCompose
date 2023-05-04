@@ -28,7 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class InteropViewModel @Inject constructor(
     private val repository: NetworkRepository,
-    private val dataStore: DataStoreManager
+    val dataStore: DataStoreManager
 ) : ViewModel() {
     val network = repository.networkStatus
 

@@ -20,7 +20,7 @@ class HomeViewModel @Inject constructor(
     val networkObserve = repository.networkStatus.asLiveData(Dispatchers.IO)
 
     private val pagedFlow = Pager(
-        PagingConfig(pageSize = 35, prefetchDistance = 105, enablePlaceholders = false)
+        PagingConfig(pageSize = 40, prefetchDistance = 120, enablePlaceholders = false)
     ) {
         CharactersPagingSource(repository)
     }.flow.cachedIn(viewModelScope)
