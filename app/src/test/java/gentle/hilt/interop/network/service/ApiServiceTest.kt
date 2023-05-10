@@ -8,6 +8,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
 import gentle.hilt.interop.TestApiService
 import gentle.hilt.interop.network.localTestUtil.TestCoroutineRule
+import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.network.models.CharactersPage
 import gentle.hilt.interop.network.models.EpisodeDetailsModel
 import gentle.hilt.interop.network.models.PageInfo
@@ -42,7 +43,7 @@ class ApiServiceTest {
 
     @Inject
     @TestApiService
-    lateinit var okHttpClient:OkHttpClient
+    lateinit var okHttpClient: OkHttpClient
 
     @Inject
     @TestApiService
@@ -79,7 +80,7 @@ class ApiServiceTest {
     }
 
     @Test
-    fun `fetchEpisode should return error when server is responding with error`() = rule.runTest{
+    fun `fetchEpisode should return error when server is responding with error`() = rule.runTest {
         val episodeId = -1
 
         val result = apiService.fetchEpisode(episodeId)
@@ -103,7 +104,8 @@ class ApiServiceTest {
     fun `fetchCharactersPage should provide next chapter when server responds successfully`() = rule.runTest {
         val pageIndex = 1
         val expectedResponse = CharactersPage(
-            info = PageInfo(count = 826, pages = 42, next = "https://rickandmortyapi.com/api/character?page=2"))
+            info = PageInfo(count = 826, pages = 42, next = "https://rickandmortyapi.com/api/character?page=2")
+        )
 
         val fetchedData = apiService.fetchCharactersPage(pageIndex)
 
@@ -112,7 +114,7 @@ class ApiServiceTest {
     }
 
     @Test
-    fun `fetchCharactersPage should return error when server is responding with error`() = rule.runTest{
+    fun `fetchCharactersPage should return error when server is responding with error`() = rule.runTest {
         val pageIndex = 999999
 
         val result = apiService.fetchCharactersPage(pageIndex)
@@ -129,5 +131,118 @@ class ApiServiceTest {
 
         assertThat(result.isSuccessful).isFalse()
         assertThat(result.errorBody()).isNotNull()
+    }
+
+
+    @Test
+    fun `fetchMultipleCharacter should return expected result when server responds successfully`() = rule.runTest {
+        val listOf = listOf("1", "2", "3")
+        val expectedResponse = listOf(
+            CharacterDetailsModel(
+                id = 1,
+                name = "Rick Sanchez"
+            ),
+            CharacterDetailsModel(
+                id = 2,
+                name = "Morty Smith"
+            ),
+            CharacterDetailsModel(
+                id = 3,
+                name = "Summer Smith"
+            )
+        )
+
+        val result = apiService.fetchMultipleCharacters(listOf)
+
+
+        assertThat(result.isSuccessful).isTrue()
+        assertThat(result.body()?.size).isEqualTo(expectedResponse.size)
+
+        for (i in expectedResponse.indices) {
+            assertThat(result.body()!![i].id).isEqualTo(expectedResponse[i].id)
+            assertThat(result.body()!![i].name).isEqualTo(expectedResponse[i].name)
+        }
+    }
+
+    @Test
+    fun `fetchMultipleCharacters should return error when api responds with an error`() = rule.runTest {
+        val result = apiService.fetchMultipleCharacters(emptyList())
+
+        assertThat(result.isSuccessful).isFalse()
+        assertThat(result.errorBody()).isNotNull()
+    }
+
+    @Test
+    fun `fetchMultipleCharacters should return exception when API throws exception`() = rule.runTest {
+        val listOf = listOf("1", "2", "3")
+        val expectedResponse = listOf(
+            CharacterDetailsModel(
+                id = 1,
+                name = "Rick Sanchez"
+            ),
+            CharacterDetailsModel(
+                id = 2,
+                name = "Morty Smith"
+            ),
+            CharacterDetailsModel(
+                id = 3,
+                name = "Summer Smith"
+            )
+        )
+
+        val result = apiServiceException.fetchMultipleCharacters(listOf)
+
+        assertThat(result.isSuccessful).isFalse()
+        assertThat(result.body()?.size).isNotEqualTo(expectedResponse.size)
+    }
+
+
+    @Test
+    fun `searchCharacterPage should provide searched chapter when server responds successfully`() = rule.runTest {
+        val characterName = "Rick"
+        val pageIndex = 1
+        val expectedResponse = CharactersPage(
+            info = PageInfo(
+                count = 107,
+                pages = 6,
+                next = "https://rickandmortyapi.com/api/character?page=2&name=Rick",
+                prev = null
+            )
+        )
+
+        val result = apiService.searchCharacterPage(characterName, pageIndex)
+
+        assertThat(result.isSuccessful).isTrue()
+        assertThat(result.body()?.info).isEqualTo(expectedResponse.info)
+    }
+
+
+    @Test
+    fun `searchCharacterPage should return error when api responds with error`() = rule.runTest{
+        val characterName = "Null"
+        val pageIndex = 1
+        val result = apiService.searchCharacterPage(characterName, pageIndex)
+
+        assertThat(result.isSuccessful).isFalse()
+        assertThat(result.errorBody()).isNotNull()
+    }
+
+    @Test
+    fun `searchCharacterPage should return exception when API throws exception`() = rule.runTest {
+        val characterName = "Rick"
+        val pageIndex = 1
+        val expectedResponse = CharactersPage(
+            info = PageInfo(
+                count = 107,
+                pages = 6,
+                next = "https://rickandmortyapi.com/api/character?page=2&name=Rick",
+                prev = null
+            )
+        )
+
+        val result = apiServiceException.searchCharacterPage(characterName, pageIndex)
+
+        assertThat(result.isSuccessful).isFalse()
+        assertThat(result.body()?.info).isNotEqualTo(expectedResponse.info)
     }
 }
