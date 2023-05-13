@@ -38,15 +38,12 @@ class ApiServiceTest {
     val rule = TestCoroutineRule()
 
     @Inject
-    @TestApiService
     lateinit var apiService: ApiService
 
     @Inject
-    @TestApiService
     lateinit var okHttpClient: OkHttpClient
 
     @Inject
-    @TestApiService
     lateinit var moshi: Moshi
 
     lateinit var apiServiceException: ApiService

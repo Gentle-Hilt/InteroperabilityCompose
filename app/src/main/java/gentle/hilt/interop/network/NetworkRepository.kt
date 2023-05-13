@@ -86,8 +86,9 @@ class NetworkRepository @Inject constructor(
         return request.body
     }
 
-    private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    private val validNetworks: MutableSet<Network> = HashSet()
+    // never use as instead use as?
+    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+    val validNetworks: MutableSet<Network> = HashSet()
 
     val networkStatus = callbackFlow {
         val networkStatusCallback = object : ConnectivityManager.NetworkCallback() {
@@ -110,16 +111,16 @@ class NetworkRepository @Inject constructor(
         val request = NetworkRequest.Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .build()
-        connectivityManager.registerNetworkCallback(request, networkStatusCallback)
+        connectivityManager?.registerNetworkCallback(request, networkStatusCallback)
 
         awaitClose {
-            connectivityManager.unregisterNetworkCallback(networkStatusCallback)
+            connectivityManager?.unregisterNetworkCallback(networkStatusCallback)
         }
     }.distinctUntilChanged()
 
     fun connected(): Boolean {
         return validNetworks.any { network ->
-            val capabilities = connectivityManager.getNetworkCapabilities(network)
+            val capabilities = connectivityManager?.getNetworkCapabilities(network)
             val hasCellularTransport = capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ?: false
             val hasWifiTransport = capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ?: false
             hasCellularTransport || hasWifiTransport
