@@ -1,19 +1,37 @@
-package gentle.hilt.interop.network
+package gentle.hilt.interop.network.repository
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
+import gentle.hilt.interop.network.ApiClient
+import gentle.hilt.interop.network.NetworkRepository
+import gentle.hilt.interop.network.NetworkStatus
+import gentle.hilt.interop.network.ResponseState
 import gentle.hilt.interop.network.cache.Cache
 import gentle.hilt.interop.network.localTestUtil.TestCoroutineRule
 import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.network.models.CharactersPage
 import gentle.hilt.interop.network.models.EpisodeDetailsModel
 import io.mockk.MockKAnnotations
+import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -24,9 +42,12 @@ import retrofit2.Response
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(JUnit4::class)
-class NetworkRepositoryTest{
+class ApiCallsTest {
     @get:Rule
     val rule = TestCoroutineRule()
+
+    @get:Rule
+    val instantExecutorRule = InstantTaskExecutorRule()
 
     @MockK
     lateinit var apiClient: ApiClient
@@ -35,12 +56,16 @@ class NetworkRepositoryTest{
     private lateinit var context: Context
 
     private lateinit var networkRepository: NetworkRepository
+
     @Before
-    fun setup(){
+    fun setup() {
         MockKAnnotations.init(this)
         networkRepository = NetworkRepository(apiClient, context)
     }
-
+    @After
+    fun tearDown() {
+        clearAllMocks()
+    }
 
     @Test
     fun `getCharactersPage with successful response`() = rule.runTest {
@@ -133,7 +158,7 @@ class NetworkRepositoryTest{
         every { mockResponse.body() } returns mockk()
 
         coEvery { apiClient.searchCharacterPage(any(), any()) } returns ResponseState.success(mockResponse)
-        val result = networkRepository.searchCharacterPage(search,pageIndex)
+        val result = networkRepository.searchCharacterPage(search, pageIndex)
 
         assertThat(result).isNotNull()
         assertThat(result).isEqualTo(cachedSearch)
@@ -148,24 +173,6 @@ class NetworkRepositoryTest{
         val result = networkRepository.searchCharacterPage("Rick", 1)
 
         assertThat(result).isNull()
-    }
-
-    @Test
-    fun `connectivity manager tests`() {
-        // find out how
-    }
-
-
-
-    @Test
-    fun `connected returns true when there is a valid network`(){
-
-    }
-
-
-    @Test
-    fun `connected returns false when there is no valid network`(){
-
     }
 
 

@@ -110,17 +110,28 @@ dependencies {
     testImplementation(testLibs.junit)
     testImplementation(testLibs.junit.ext)
     testImplementation(testLibs.arch.core)
+
     testImplementation(testLibs.mockk)
-    testImplementation(testLibs.mockk.android)
     testImplementation(testLibs.truth)
     testImplementation(testLibs.coroutines)
     testImplementation(testLibs.robolectric)
     testImplementation(testLibs.hilt)
-    debugImplementation(testLibs.hilt)
-    debugImplementation(testLibs.runner)
-    kaptAndroidTest(testLibs.hilt.compiler)
     kaptTest(testLibs.hilt.compiler)
+    testImplementation(testLibs.turbine)
 
+
+    androidTestImplementation(testLibs.test.core.ktx)
+    androidTestImplementation(testLibs.junit)
+    androidTestImplementation(testLibs.junit.ext)
+    androidTestImplementation(testLibs.runner)
+    androidTestImplementation(testLibs.test.rules)
+
+    androidTestImplementation(testLibs.mockk.android)
+    androidTestImplementation(testLibs.truth)
+    androidTestImplementation(testLibs.coroutines)
+    androidTestImplementation(testLibs.hilt)
+    kaptAndroidTest(testLibs.hilt.compiler)
+    androidTestImplementation(testLibs.turbine)
     // Other
     implementation(libs.splash.screen)
     implementation(testLibs.kotlin.reflect)
