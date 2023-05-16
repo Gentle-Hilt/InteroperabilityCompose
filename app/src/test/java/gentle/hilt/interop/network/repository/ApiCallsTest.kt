@@ -65,6 +65,11 @@ class ApiCallsTest {
     @After
     fun tearDown() {
         clearAllMocks()
+
+        Cache.searchPage.clear()
+        Cache.character.clear()
+        Cache.episode.clear()
+        Cache.charactersInEpisode.clear()
     }
 
     @Test
