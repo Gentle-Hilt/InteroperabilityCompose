@@ -15,13 +15,13 @@ class CharactersPagingSource @Inject constructor(
         val pageNumber = params.key ?: 1
         val previousKey = if (pageNumber == 1) null else pageNumber - 1
 
-        val pageRequest = repository.getCharactersPage(pageNumber)
+        val characterPage = repository.getCharactersPage(pageNumber)
             ?: return LoadResult.Error(Exception(repository.exceptionNetworkMessage))
 
         return LoadResult.Page(
-            data = pageRequest.results,
+            data = characterPage.results,
             prevKey = previousKey,
-            nextKey = getPageIndexFromNext(pageRequest.info.next)
+            nextKey = extractPageNumberFromLink(characterPage.info.next)
         )
     }
 
@@ -32,7 +32,7 @@ class CharactersPagingSource @Inject constructor(
         }
     }
 
-    fun getPageIndexFromNext(next: String?): Int? {
+    fun extractPageNumberFromLink(next: String?): Int? {
         if (next == null) {
             return null
         }

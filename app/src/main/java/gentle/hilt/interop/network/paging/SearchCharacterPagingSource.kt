@@ -15,13 +15,13 @@ class SearchCharacterPagingSource @Inject constructor(
         val pageNumber = params.key ?: 1
         val previousKey = if (pageNumber == 1) null else pageNumber - 1
 
-        val request = repository.searchCharacterPage(userSearch, pageNumber)
+        val characterPage = repository.searchCharacterPage(userSearch, pageNumber)
             ?: return LoadResult.Error(Exception(repository.exceptionNetworkMessage))
 
         return LoadResult.Page(
-            data = request.results,
+            data = characterPage.results,
             prevKey = previousKey,
-            nextKey = getPageIndexFromNext(request.info.next)
+            nextKey = extractPageNumberFromLink(characterPage.info.next)
         )
     }
     override fun getRefreshKey(state: PagingState<Int, CharacterDetailsModel>): Int? {
@@ -31,7 +31,7 @@ class SearchCharacterPagingSource @Inject constructor(
         }
     }
 
-    private fun getPageIndexFromNext(next: String?): Int? {
+    fun extractPageNumberFromLink(next: String?): Int? {
         if (next == null) {
             return null
         }

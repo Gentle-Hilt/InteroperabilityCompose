@@ -1,6 +1,7 @@
 package gentle.hilt.interop.network.paging
 
 
+
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.google.common.truth.Truth.assertThat
@@ -15,7 +16,6 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -25,7 +25,7 @@ import org.robolectric.RobolectricTestRunner
 
 @ExperimentalCoroutinesApi
 @RunWith(RobolectricTestRunner::class)
-class CharactersPagingSourceTest {
+class SearchCharacterPagingSourceTest{
 
     @get:Rule
     val rule = TestCoroutineRule()
@@ -33,21 +33,19 @@ class CharactersPagingSourceTest {
     @MockK
     private lateinit var repository: NetworkRepository
 
-    private lateinit var pagingSource: CharactersPagingSource
+    private lateinit var pagingSource: SearchCharacterPagingSource
 
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        pagingSource = CharactersPagingSource(repository)
+        pagingSource = SearchCharacterPagingSource(repository, "Rick")
     }
-
-
     @Test
     fun `load() should return error when repository returns null`() = rule.runTest {
         val pageNumber = 1
         val loadParams = PagingSource.LoadParams.Refresh(pageNumber, 10, false)
 
-        coEvery { repository.getCharactersPage(pageNumber) } returns null
+        coEvery { repository.searchCharacterPage("Rick", pageNumber) } returns null
         coEvery { repository.exceptionNetworkMessage } returns "Any error message for test"
 
         val result = pagingSource.load(loadParams)
@@ -55,17 +53,17 @@ class CharactersPagingSourceTest {
     }
 
     @Test
-    fun `load() should load page when repository returns correct response`() = runTest {
+    fun `load() should load page when repository returns correct response`() = rule.runTest {
         val pageNumber = 1
         val pageRequest = CharactersPage(
             info = PageInfo(count = 10, pages = 2, next = "https://api.com/characters?page=2"),
             results = listOf(CharacterDetailsModel(id = 1, name = "Rick Sanchez"))
         )
 
-        coEvery { repository.getCharactersPage(pageNumber) } returns pageRequest
-
+        coEvery { repository.searchCharacterPage("Rick", pageNumber) } returns pageRequest
         val loadParams = PagingSource.LoadParams.Refresh<Int>(null, 10, false)
         val result = pagingSource.load(loadParams)
+
         assertThat(result).isInstanceOf(PagingSource.LoadResult.Page::class.java)
         val pageResult = result as PagingSource.LoadResult.Page<Int, CharacterDetailsModel>
         assertThat(pageResult.data).isEqualTo(pageRequest.results)
@@ -97,7 +95,6 @@ class CharactersPagingSourceTest {
         assertThat(result).isEqualTo(2)
     }
 
-
     @Test
     fun `getRefreshKey() returns prevKey +1 when anchorPosition is Next page`() {
         val pagingState = mockk<PagingState<Int, CharacterDetailsModel>>()
@@ -113,11 +110,11 @@ class CharactersPagingSourceTest {
         assertThat(result).isEqualTo(2)
     }
 
-
     @Test
     fun `extractPageNumberFromLink() should return null when there's no link`() {
         val link: String? = null
         val result = pagingSource.extractPageNumberFromLink(link)
+
         assertThat(result).isNull()
     }
 
@@ -136,5 +133,4 @@ class CharactersPagingSourceTest {
         val result = pagingSource.extractPageNumberFromLink(correctLink)
         assertThat(result).isEqualTo(3)
     }
-
 }
