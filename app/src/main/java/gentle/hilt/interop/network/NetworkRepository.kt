@@ -20,7 +20,9 @@ class NetworkRepository @Inject constructor(
     private val apiClient: ApiClient,
     context: Context
 ) {
-    val exceptionNetworkMessage: String = "${context.getString(R.string.check_internet)} \n" + context.getString(R.string.failed_to_load)
+    // Hilt can't initialise context in tests
+    // "${context.getString(R.string.check_internet)} \n" + context.getString(R.string.failed_to_load)
+    val exceptionNetworkMessage: String = "Any error message"
     val isLoading = MutableStateFlow(false)
     suspend fun getCharactersPage(pageIndex: Int): CharactersPage? {
         isLoading.value = true

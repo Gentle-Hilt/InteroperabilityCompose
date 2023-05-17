@@ -5,7 +5,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.google.common.truth.Truth.assertThat
 import gentle.hilt.interop.network.NetworkRepository
-import gentle.hilt.interop.network.localTestUtil.TestCoroutineRule
+import gentle.hilt.interop.localTestUtil.TestCoroutineRule
 import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.network.models.CharactersPage
 import gentle.hilt.interop.network.models.PageInfo

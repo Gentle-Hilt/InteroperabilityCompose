@@ -1,4 +1,4 @@
-package gentle.hilt.interop.network.localTestUtil
+package gentle.hilt.interop.localTestUtil
 
 import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.Dispatchers

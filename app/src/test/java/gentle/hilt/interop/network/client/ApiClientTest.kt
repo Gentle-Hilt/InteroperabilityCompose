@@ -1,8 +1,10 @@
-package gentle.hilt.interop.network
+package gentle.hilt.interop.network.client
 
 
 import com.google.common.truth.Truth.assertThat
-import gentle.hilt.interop.network.localTestUtil.TestCoroutineRule
+import gentle.hilt.interop.network.ApiClient
+import gentle.hilt.interop.network.ResponseState
+import gentle.hilt.interop.localTestUtil.TestCoroutineRule
 import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.network.models.CharactersPage
 import gentle.hilt.interop.network.models.EpisodeDetailsModel
@@ -11,7 +13,6 @@ import gentle.hilt.interop.network.service.ApiService
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
-import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody

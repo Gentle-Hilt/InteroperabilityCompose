@@ -5,7 +5,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
-import gentle.hilt.interop.network.localTestUtil.TestCoroutineRule
+import gentle.hilt.interop.localTestUtil.TestCoroutineRule
 import io.mockk.MockKAnnotations
 import io.mockk.clearAllMocks
 import io.mockk.every

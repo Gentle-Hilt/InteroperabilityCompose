@@ -11,7 +11,7 @@ import gentle.hilt.interop.network.NetworkRepository
 import gentle.hilt.interop.network.NetworkStatus
 import gentle.hilt.interop.network.ResponseState
 import gentle.hilt.interop.network.cache.Cache
-import gentle.hilt.interop.network.localTestUtil.TestCoroutineRule
+import gentle.hilt.interop.localTestUtil.TestCoroutineRule
 import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.network.models.CharactersPage
 import gentle.hilt.interop.network.models.EpisodeDetailsModel
@@ -46,9 +46,6 @@ class ApiCallsTest {
     @get:Rule
     val rule = TestCoroutineRule()
 
-    @get:Rule
-    val instantExecutorRule = InstantTaskExecutorRule()
-
     @MockK
     lateinit var apiClient: ApiClient
 
@@ -67,7 +64,6 @@ class ApiCallsTest {
         clearAllMocks()
 
         Cache.searchPage.clear()
-        Cache.character.clear()
         Cache.episode.clear()
         Cache.charactersInEpisode.clear()
     }

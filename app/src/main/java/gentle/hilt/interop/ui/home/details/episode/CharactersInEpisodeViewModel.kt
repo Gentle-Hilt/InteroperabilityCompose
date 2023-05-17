@@ -18,8 +18,8 @@ class CharactersInEpisodeViewModel @Inject constructor(
 ) : ViewModel() {
     val networkObserve = repository.networkStatus.asLiveData(Dispatchers.IO)
 
-    private val episodeState = MutableStateFlow(EpisodeDetailsModel())
-    private val charactersState = MutableStateFlow<List<CharacterDetailsModel>>(emptyList())
+    val episodeState = MutableStateFlow(EpisodeDetailsModel())
+    val charactersState = MutableStateFlow<List<CharacterDetailsModel>>(emptyList())
 
     fun fetchEpisodeDetails(episodeId: Int) {
         viewModelScope.launch {

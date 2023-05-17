@@ -6,8 +6,7 @@ import com.squareup.moshi.Moshi
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
-import gentle.hilt.interop.TestApiService
-import gentle.hilt.interop.network.localTestUtil.TestCoroutineRule
+import gentle.hilt.interop.localTestUtil.TestCoroutineRule
 import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.network.models.CharactersPage
 import gentle.hilt.interop.network.models.EpisodeDetailsModel
