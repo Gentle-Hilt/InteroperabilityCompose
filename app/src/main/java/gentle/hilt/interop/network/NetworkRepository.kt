@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
+import android.net.wifi.WifiManager
 import gentle.hilt.interop.R
 import gentle.hilt.interop.network.cache.Cache
 import gentle.hilt.interop.network.models.CharacterDetailsModel

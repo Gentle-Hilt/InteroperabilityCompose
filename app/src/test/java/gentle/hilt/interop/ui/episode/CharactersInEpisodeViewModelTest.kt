@@ -9,6 +9,7 @@ import gentle.hilt.interop.network.ResponseState
 import gentle.hilt.interop.network.cache.Cache
 import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.network.models.EpisodeDetailsModel
+import gentle.hilt.interop.network.service.ApiService
 import gentle.hilt.interop.ui.home.details.episode.CharactersInEpisodeViewModel
 import io.mockk.MockKAnnotations
 import io.mockk.clearAllMocks
@@ -39,6 +40,9 @@ class CharactersInEpisodeViewModelTest {
     @MockK
     lateinit var networkRepository: NetworkRepository
 
+    @MockK
+    lateinit var apiService: ApiService
+
     private lateinit var viewModel: CharactersInEpisodeViewModel
 
     private val listOfCharacterDetailsModel = listOf(CharacterDetailsModel())
@@ -63,6 +67,7 @@ class CharactersInEpisodeViewModelTest {
         Response.success(episodeDetailsModel),
         null
     )
+
 
     private val charactersInEpisodeName = listOf("Rick", "Morty")
     private val charactersInEpisodeNumber = listOf("1", "2")

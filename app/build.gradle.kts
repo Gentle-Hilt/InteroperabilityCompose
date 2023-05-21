@@ -134,6 +134,4 @@ dependencies {
     androidTestImplementation(testLibs.turbine)
     // Other
     implementation(libs.splash.screen)
-    implementation(testLibs.kotlin.reflect)
-    testImplementation(testLibs.kotlin.reflect)
 }
