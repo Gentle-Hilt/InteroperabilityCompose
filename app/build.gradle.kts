@@ -24,9 +24,11 @@ android {
     }
 
     buildTypes {
+        // minifyEnabled do not load AbstractComposeView with PagingSource
+        // can be related to Coil ...
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }

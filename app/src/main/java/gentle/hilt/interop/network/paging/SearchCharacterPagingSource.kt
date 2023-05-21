@@ -21,7 +21,7 @@ class SearchCharacterPagingSource @Inject constructor(
         return LoadResult.Page(
             data = request.results,
             prevKey = previousKey,
-            nextKey = getPageIndexFromNext(request.info.next)
+            nextKey = extractPageNumberFromLink(request.info.next)
         )
     }
     override fun getRefreshKey(state: PagingState<Int, CharacterDetailsModel>): Int? {
@@ -31,7 +31,7 @@ class SearchCharacterPagingSource @Inject constructor(
         }
     }
 
-    private fun getPageIndexFromNext(next: String?): Int? {
+    private fun extractPageNumberFromLink(next: String?): Int? {
         if (next == null) {
             return null
         }

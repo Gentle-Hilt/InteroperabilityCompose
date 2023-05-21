@@ -21,7 +21,7 @@ class CharactersPagingSource @Inject constructor(
         return LoadResult.Page(
             data = pageRequest.results,
             prevKey = previousKey,
-            nextKey = getPageIndexFromNext(pageRequest.info.next)
+            nextKey = extractPageNumberFromLink(pageRequest.info.next)
         )
     }
 
@@ -32,7 +32,7 @@ class CharactersPagingSource @Inject constructor(
         }
     }
 
-    fun getPageIndexFromNext(next: String?): Int? {
+    private fun extractPageNumberFromLink(next: String?): Int? {
         if (next == null) {
             return null
         }

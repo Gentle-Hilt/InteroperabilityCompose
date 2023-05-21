@@ -52,7 +52,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import gentle.hilt.interop.R
 import gentle.hilt.interop.databinding.ActivityInteropBinding
 import gentle.hilt.interop.databinding.NavHeaderInteropBinding
-import gentle.hilt.interop.ui.robotoFontFamily
+import gentle.hilt.interop.ui.settings.theme.robotoFontFamily
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -217,7 +217,7 @@ class InteropActivity : AppCompatActivity() {
 
     private fun launchAppFirstTimeDialog() {
         binding.appBarMain.firstTimeDialog.setContent {
-            val showDialog = remember { mutableStateOf(true) }
+            val showDialog = remember { mutableStateOf(false) }
             lifecycleScope.launch {
                 val firstTime = viewModel.dataStore.readFirstTimeDialog.first()
                 if (firstTime) {

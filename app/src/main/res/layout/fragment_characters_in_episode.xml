@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:background="@color/main_background"
     android:layout_height="match_parent"
-    tools:context=".ui.home.details.episode.CharactersInEpisodeFragment">
+    tools:context=".ui.episode.CharactersInEpisodeFragment">
 
 
     <com.google.android.material.appbar.AppBarLayout
@@ -39,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
 
-        <gentle.hilt.interop.ui.home.details.episode.EpisodeInfoView
+        <gentle.hilt.interop.ui.episode.EpisodeInfoView
             android:id="@+id/episodeInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
           />
 
 
-        <gentle.hilt.interop.ui.home.details.episode.CharactersInEpisodeView
+        <gentle.hilt.interop.ui.episode.CharactersInEpisodeView
             android:id="@+id/charactersInEpisode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
