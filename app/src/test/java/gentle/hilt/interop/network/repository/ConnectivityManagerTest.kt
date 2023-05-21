@@ -20,7 +20,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
-
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(JUnit4::class)
 class ConnectivityManagerTest {
@@ -39,6 +38,7 @@ class ConnectivityManagerTest {
     private val validNetworks: MutableSet<Network> = HashSet()
 
     private lateinit var capabilities: NetworkCapabilities
+
     @Before
     fun setup() {
         MockKAnnotations.init(this)

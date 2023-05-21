@@ -10,7 +10,6 @@ import gentle.hilt.interop.network.cache.Cache
 import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.network.models.EpisodeDetailsModel
 import gentle.hilt.interop.network.service.ApiService
-import gentle.hilt.interop.ui.home.details.episode.CharactersInEpisodeViewModel
 import io.mockk.MockKAnnotations
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -51,7 +50,7 @@ class CharactersInEpisodeViewModelTest {
         characters = listOf(
             "https://rickandmortyapi.com/api/character/1",
             "https://rickandmortyapi.com/api/character/2"
-        ),
+        )
     )
 
     // Not necessary to mockk ApiClient in viewModelTest.
@@ -67,7 +66,6 @@ class CharactersInEpisodeViewModelTest {
         Response.success(episodeDetailsModel),
         null
     )
-
 
     private val charactersInEpisodeName = listOf("Rick", "Morty")
     private val charactersInEpisodeNumber = listOf("1", "2")
@@ -102,5 +100,4 @@ class CharactersInEpisodeViewModelTest {
         assertThat(viewModel.episodeState.first()).isEqualTo(episodeDetailsModel)
         assertThat(viewModel.charactersState.first()).isEqualTo(listOfCharacterDetailsModel)
     }
-
 }

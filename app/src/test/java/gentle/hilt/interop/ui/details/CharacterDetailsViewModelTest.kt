@@ -8,13 +8,11 @@ import gentle.hilt.interop.localTestUtil.advanceTimeByAndRun
 import gentle.hilt.interop.network.NetworkRepository
 import gentle.hilt.interop.network.NetworkStatus
 import gentle.hilt.interop.network.cache.Cache
-import gentle.hilt.interop.ui.home.details.CharacterDetailsViewModel
 import io.mockk.MockKAnnotations
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
-import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
@@ -40,6 +38,7 @@ class CharacterDetailsViewModelTest {
     lateinit var chRepository: CharacterDetailsRepository
 
     private lateinit var viewModel: CharacterDetailsViewModel
+
     @Before
     fun setup() {
         MockKAnnotations.init(this)
@@ -65,7 +64,7 @@ class CharacterDetailsViewModelTest {
     }
 
     @Test
-    fun `addCharacterAsFavorite() should add new character`() = rule.runTest{
+    fun `addCharacterAsFavorite() should add new character`() = rule.runTest {
         viewModel.addCharacterAsFavorite(entity)
 
         advanceUntilIdle()
@@ -81,7 +80,5 @@ class CharacterDetailsViewModelTest {
         viewModel.deleteCharacterFromFavorite(entity)
         advanceUntilIdle()
         coVerify { chRepository.deleteCharacter(entity) }
-
     }
-
 }

@@ -1,17 +1,12 @@
 package gentle.hilt.interop.network.repository
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
+import gentle.hilt.interop.localTestUtil.TestCoroutineRule
 import gentle.hilt.interop.network.ApiClient
 import gentle.hilt.interop.network.NetworkRepository
-import gentle.hilt.interop.network.NetworkStatus
 import gentle.hilt.interop.network.ResponseState
 import gentle.hilt.interop.network.cache.Cache
-import gentle.hilt.interop.localTestUtil.TestCoroutineRule
 import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.network.models.CharactersPage
 import gentle.hilt.interop.network.models.EpisodeDetailsModel
@@ -21,16 +16,8 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
-import io.mockk.just
 import io.mockk.mockk
-import io.mockk.runs
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -38,7 +25,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import retrofit2.Response
-
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(JUnit4::class)
@@ -59,6 +45,7 @@ class ApiCallsTest {
         MockKAnnotations.init(this)
         networkRepository = NetworkRepository(apiClient, context)
     }
+
     @After
     fun tearDown() {
         clearAllMocks()
@@ -91,6 +78,7 @@ class ApiCallsTest {
 
         assertThat(result).isNull()
     }
+
     @Test
     fun `getEpisode with successful response`() = rule.runTest {
         val cachedEpisode = EpisodeDetailsModel(1, "test")
@@ -119,7 +107,6 @@ class ApiCallsTest {
         assertThat(result).isNull()
     }
 
-
     @Test
     fun `getCharacters with successful response`() = rule.runTest {
         val cachedCharacters = listOf<CharacterDetailsModel>()
@@ -135,6 +122,7 @@ class ApiCallsTest {
         assertThat(result).isNotNull()
         assertThat(result).isEqualTo(cachedCharacters)
     }
+
     @Test
     fun `getCharacters with failed response`() = rule.runTest {
         val mockResponse = mockk<Response<List<CharacterDetailsModel>>>()
@@ -164,6 +152,7 @@ class ApiCallsTest {
         assertThat(result).isNotNull()
         assertThat(result).isEqualTo(cachedSearch)
     }
+
     @Test
     fun `searchCharacterPage with failed response`() = rule.runTest {
         val mockResponse = mockk<Response<CharactersPage>>()
@@ -175,6 +164,4 @@ class ApiCallsTest {
 
         assertThat(result).isNull()
     }
-
-
 }

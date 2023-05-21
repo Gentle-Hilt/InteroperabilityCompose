@@ -8,6 +8,7 @@ import gentle.hilt.interop.androidTestUtil.TestCoroutineRule
 import gentle.hilt.interop.network.NetworkRepository
 import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.network.models.EpisodeDetailsModel
+import gentle.hilt.interop.ui.episode.CharactersInEpisodeViewModel
 import io.mockk.MockKAnnotations
 import io.mockk.clearAllMocks
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,7 +28,6 @@ class CharactersInEpisodeViewModelTest {
 
     @get:Rule
     val rule = TestCoroutineRule()
-
 
     @Inject
     lateinit var networkRepository: NetworkRepository
@@ -51,12 +51,10 @@ class CharactersInEpisodeViewModelTest {
         val charactersResponse = listOf(CharacterDetailsModel(id = 1, name = "Rick"), CharacterDetailsModel(id = 2, name = "Morty"))
         val episodeResponse = EpisodeDetailsModel(id = 1)
 
-
         viewModel.fetchEpisodeDetails(1)
 
         advanceUntilIdle()
         viewModel.episodeState.test { Truth.assertThat(awaitItem()).isEqualTo(episodeResponse) }
         viewModel.charactersState.test { Truth.assertThat(awaitItem()).isEqualTo(charactersResponse) }
-
     }
 }

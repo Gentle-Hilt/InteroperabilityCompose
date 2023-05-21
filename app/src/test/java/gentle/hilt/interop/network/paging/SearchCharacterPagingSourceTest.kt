@@ -1,12 +1,10 @@
 package gentle.hilt.interop.network.paging
 
-
-
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.google.common.truth.Truth.assertThat
-import gentle.hilt.interop.network.NetworkRepository
 import gentle.hilt.interop.localTestUtil.TestCoroutineRule
+import gentle.hilt.interop.network.NetworkRepository
 import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.network.models.CharactersPage
 import gentle.hilt.interop.network.models.PageInfo
@@ -22,10 +20,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
-
 @ExperimentalCoroutinesApi
 @RunWith(RobolectricTestRunner::class)
-class SearchCharacterPagingSourceTest{
+class SearchCharacterPagingSourceTest {
 
     @get:Rule
     val rule = TestCoroutineRule()
@@ -40,6 +37,7 @@ class SearchCharacterPagingSourceTest{
         MockKAnnotations.init(this)
         pagingSource = SearchCharacterPagingSource(repository, "Rick")
     }
+
     @Test
     fun `load() should return error when repository returns null`() = rule.runTest {
         val pageNumber = 1

@@ -1,4 +1,4 @@
-package gentle.hilt.interop.ui.home.details.episode
+package gentle.hilt.interop.ui.episode
 
 import android.content.Context
 import android.content.res.Configuration
@@ -44,11 +44,12 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import coil.compose.rememberAsyncImagePainter
 import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
-import gentle.hilt.interop.ui.robotoFontFamily
+import gentle.hilt.interop.ui.settings.theme.robotoFontFamily
 
 @Composable
 fun CharacterInEpisode(character: CharacterDetailsModel, navController: NavController) {
-    val action = CharactersInEpisodeFragmentDirections.actionCharactersInEpisodeFragmentToCharacterDetailsFragment(character)
+    val action =
+        CharactersInEpisodeFragmentDirections.actionCharactersInEpisodeFragmentToCharacterDetailsFragment(character)
     Card(
         shape = RoundedCornerShape(10),
         backgroundColor = Color.DarkGray,

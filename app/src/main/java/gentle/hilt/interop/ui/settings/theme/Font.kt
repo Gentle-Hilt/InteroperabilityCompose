@@ -1,4 +1,4 @@
-package gentle.hilt.interop.ui
+package gentle.hilt.interop.ui.settings.theme
 
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily

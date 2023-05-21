@@ -1,6 +1,5 @@
 package gentle.hilt.interop.network.service
 
-
 import com.google.common.truth.Truth.assertThat
 import com.squareup.moshi.Moshi
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -22,7 +21,6 @@ import org.robolectric.annotation.Config
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Inject
-
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Config(application = HiltTestApplication::class, manifest = Config.NONE)
@@ -59,13 +57,12 @@ class ApiServiceTest {
             .create(ApiService::class.java)
     }
 
-
     @Test
     fun `fetchEpisode should provide expected response when server responds successfully`() = rule.runTest {
         val episodeId = 1
         val expectedResponse = EpisodeDetailsModel(
             id = 1,
-            name = "Pilot",
+            name = "Pilot"
         )
 
         val fetchedData = apiService.fetchEpisode(episodeId)
@@ -94,7 +91,6 @@ class ApiServiceTest {
         assertThat(result.isSuccessful).isFalse()
         assertThat(result.errorBody()).isNotNull()
     }
-
 
     @Test
     fun `fetchCharactersPage should provide next chapter when server responds successfully`() = rule.runTest {
@@ -129,7 +125,6 @@ class ApiServiceTest {
         assertThat(result.errorBody()).isNotNull()
     }
 
-
     @Test
     fun `fetchMultipleCharacter should return expected result when server responds successfully`() = rule.runTest {
         val listOf = listOf("1", "2", "3")
@@ -149,7 +144,6 @@ class ApiServiceTest {
         )
 
         val result = apiService.fetchMultipleCharacters(listOf)
-
 
         assertThat(result.isSuccessful).isTrue()
         assertThat(result.body()?.size).isEqualTo(expectedResponse.size)
@@ -192,7 +186,6 @@ class ApiServiceTest {
         assertThat(result.body()?.size).isNotEqualTo(expectedResponse.size)
     }
 
-
     @Test
     fun `searchCharacterPage should provide searched chapter when server responds successfully`() = rule.runTest {
         val characterName = "Rick"
@@ -212,9 +205,8 @@ class ApiServiceTest {
         assertThat(result.body()?.info).isEqualTo(expectedResponse.info)
     }
 
-
     @Test
-    fun `searchCharacterPage should return error when api responds with error`() = rule.runTest{
+    fun `searchCharacterPage should return error when api responds with error`() = rule.runTest {
         val characterName = "Null"
         val pageIndex = 1
         val result = apiService.searchCharacterPage(characterName, pageIndex)

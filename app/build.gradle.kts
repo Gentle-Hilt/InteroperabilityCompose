@@ -118,20 +118,6 @@ dependencies {
     testImplementation(testLibs.hilt)
     kaptTest(testLibs.hilt.compiler)
     testImplementation(testLibs.turbine)
-
-
-    androidTestImplementation(testLibs.test.core.ktx)
-    androidTestImplementation(testLibs.junit)
-    androidTestImplementation(testLibs.junit.ext)
-    androidTestImplementation(testLibs.runner)
-    androidTestImplementation(testLibs.test.rules)
-
-    androidTestImplementation(testLibs.mockk.android)
-    androidTestImplementation(testLibs.truth)
-    androidTestImplementation(testLibs.coroutines)
-    androidTestImplementation(testLibs.hilt)
-    kaptAndroidTest(testLibs.hilt.compiler)
-    androidTestImplementation(testLibs.turbine)
     // Other
     implementation(libs.splash.screen)
 }

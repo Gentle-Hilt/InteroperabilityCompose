@@ -27,8 +27,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import gentle.hilt.interop.data.datastore.DataStoreManager
-import gentle.hilt.interop.ui.robotoFontFamily
 import gentle.hilt.interop.ui.settings.theme.SettingsTheme
+import gentle.hilt.interop.ui.settings.theme.robotoFontFamily
 import kotlinx.coroutines.launch
 
 @Composable

@@ -42,7 +42,7 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import coil.compose.rememberAsyncImagePainter
 import gentle.hilt.interop.data.room.entities.CharacterDetailsEntity
 import gentle.hilt.interop.data.room.mappers.toModel
-import gentle.hilt.interop.ui.robotoFontFamily
+import gentle.hilt.interop.ui.settings.theme.robotoFontFamily
 
 @Composable
 fun FavoriteCharacter(character: CharacterDetailsEntity, navController: NavController?) {

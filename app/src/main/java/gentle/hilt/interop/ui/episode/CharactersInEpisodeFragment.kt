@@ -1,4 +1,4 @@
-package gentle.hilt.interop.ui.home.details.episode
+package gentle.hilt.interop.ui.episode
 
 import android.os.Bundle
 import android.view.LayoutInflater

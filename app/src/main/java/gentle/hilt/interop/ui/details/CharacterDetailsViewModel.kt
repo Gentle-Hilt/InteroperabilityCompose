@@ -1,4 +1,4 @@
-package gentle.hilt.interop.ui.home.details
+package gentle.hilt.interop.ui.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData

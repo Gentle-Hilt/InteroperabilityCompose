@@ -52,7 +52,7 @@ import coil.compose.rememberAsyncImagePainter
 import gentle.hilt.interop.R
 import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
-import gentle.hilt.interop.ui.robotoFontFamily
+import gentle.hilt.interop.ui.settings.theme.robotoFontFamily
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

@@ -1,4 +1,4 @@
-package gentle.hilt.interop.ui.home.details
+package gentle.hilt.interop.ui.details
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
@@ -64,7 +64,7 @@ import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.fade_white
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.white
-import gentle.hilt.interop.ui.robotoFontFamily
+import gentle.hilt.interop.ui.settings.theme.robotoFontFamily
 import java.util.Locale
 
 @AndroidEntryPoint

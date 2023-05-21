@@ -6,7 +6,7 @@ import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
 import timber.log.Timber
 
-object DeleteInRelease {
+object Logger {
     private const val TIMBER_WILL_JUMP_TO_MESSAGE_FROM_LOGCAT = 4
 
     fun clickableTimberLogs() {

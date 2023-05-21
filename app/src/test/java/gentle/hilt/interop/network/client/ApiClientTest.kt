@@ -1,10 +1,9 @@
 package gentle.hilt.interop.network.client
 
-
 import com.google.common.truth.Truth.assertThat
+import gentle.hilt.interop.localTestUtil.TestCoroutineRule
 import gentle.hilt.interop.network.ApiClient
 import gentle.hilt.interop.network.ResponseState
-import gentle.hilt.interop.localTestUtil.TestCoroutineRule
 import gentle.hilt.interop.network.models.CharacterDetailsModel
 import gentle.hilt.interop.network.models.CharactersPage
 import gentle.hilt.interop.network.models.EpisodeDetailsModel
@@ -23,7 +22,6 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import retrofit2.Response
 
-
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(JUnit4::class)
 class ApiClientTest {
@@ -40,7 +38,6 @@ class ApiClientTest {
         MockKAnnotations.init(this)
         apiClient = ApiClient(apiService)
     }
-
 
     @Test
     fun `getEpisode should return success when api call is successful`() = rule.runTest {
@@ -66,7 +63,6 @@ class ApiClientTest {
         val failure = ResponseState.failure<EpisodeDetailsModel>(Exception())::class.java
         assertThat(actualResponse).isInstanceOf(failure)
     }
-
 
     @Test
     fun `getEpisode should throw exception when api call throws exception`() = rule.runTest {
@@ -104,7 +100,6 @@ class ApiClientTest {
         val failure = ResponseState.failure<List<CharacterDetailsModel>>(Exception())::class.java
         assertThat(actualResponse).isInstanceOf(failure)
     }
-
 
     @Test
     fun `getCharacters should throw exception when api call throws exception`() = rule.runTest {
@@ -150,7 +145,6 @@ class ApiClientTest {
         val failure = ResponseState.failure<CharactersPage>(Exception())::class.java
         assertThat(actualResponse).isInstanceOf(failure)
     }
-
 
     @Test
     fun `getCharactersPage should throw exception when api call throws exception`() = rule.runTest {
@@ -208,5 +202,3 @@ class ApiClientTest {
         assertThat(actualResponse.exception?.message).contains(expectedMessage)
     }
 }
-
-

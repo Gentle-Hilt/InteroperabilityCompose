@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_background"
-    tools:context=".ui.home.details.CharacterDetailsFragment">
+    tools:context=".ui.details.CharacterDetailsFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -81,7 +81,7 @@
         </LinearLayout>
 
 
-        <gentle.hilt.interop.ui.home.details.EpisodesHorizontalRecyclerView
+        <gentle.hilt.interop.ui.details.EpisodesHorizontalRecyclerView
             android:id="@+id/characterInEpisodes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

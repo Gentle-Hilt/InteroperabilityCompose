@@ -1,4 +1,4 @@
-package gentle.hilt.interop.ui.home.details.episode
+package gentle.hilt.interop.ui.episode
 
 import android.content.Context
 import android.content.res.Configuration
@@ -30,7 +30,7 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import gentle.hilt.interop.network.models.EpisodeDetailsModel
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.gray
 import gentle.hilt.interop.ui.home.CharactersGridRecyclerView.Companion.white
-import gentle.hilt.interop.ui.robotoFontFamily
+import gentle.hilt.interop.ui.settings.theme.robotoFontFamily
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.Date
