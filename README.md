@@ -12,7 +12,7 @@ Icon was chosen after thoroughly reading compose navigation, attempt to use comp
 
 ## Screenshots
 
-![App Screenshots](https://cdn.discordapp.com/attachments/841644670589206538/1112347522489401344/interop_application.png)
+![App Screenshots](https://cdn.discordapp.com/attachments/278891946439868426/1112367844622086254/image_2023-05-28_181217845.webp)
 ![Tests Screenshots](https://cdn.discordapp.com/attachments/841644707666460683/1112356672090951701/image.png)
 
 ## Features
