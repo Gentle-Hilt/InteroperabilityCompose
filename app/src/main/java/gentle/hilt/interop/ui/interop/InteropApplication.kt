@@ -18,7 +18,7 @@ class InteropApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        DeleteInRelease.clickableTimberLogs()
+        Logger.clickableTimberLogs()
 
         runBlocking {
             withContext(Dispatchers.IO) {
